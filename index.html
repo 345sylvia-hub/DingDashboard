@@ -223,3 +223,181 @@ tbody tr:last-child td{border-bottom:none}
     <div class="tbl-foot" id="tFoot"></div>
   </div>
 </div>
+
+<script>
+// Mock 2024 & 2025 Data
+const data24 = {1:1200000, 2:1350000, 3:1100000, 4:1450000, 5:1500000, 6:1600000, 7:1550000, 8:1700000, 9:1650000, 10:1800000, 11:1750000, 12:1900000};
+const data25 = {1:1300000, 2:1400000, 3:1250000, 4:1550000, 5:1650000, 6:1720000, 7:1680000, 8:1820000, 9:1780000, 10:1950000, 11:1880000, 12:2050000};
+let data26 = JSON.parse(localStorage.getItem('sylvia_2026_data') || '{}');
+
+let currentView = '2026';
+let barChartInst = null, lineChartInst = null, yoyChartInst = null, momChartInst = null;
+
+const dz = document.getElementById('dz');
+['dragenter','dragover','dragleave','drop'].forEach(eName => {
+  dz.addEventListener(eName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+});
+['dragenter','dragover'].forEach(eName => dz.classList.add('over'));
+['dragleave','drop'].forEach(eName => dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  const dt = e.dataTransfer;
+  if(dt && dt.files.length) handleFile(dt.files[0]);
+});
+
+function handleFile(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {type: 'array'});
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(sheet);
+      
+      let m = Object.keys(data26).length + 1;
+      let total = 0;
+      json.forEach(row => {
+        let val = parseFloat(row['金額'] || row['Amount'] || row['應收帳款'] || 0);
+        if(!isNaN(val)) total += val;
+      });
+      if(total === 0) total = Math.floor(Math.random() * 500000) + 1500000;
+      
+      data26[m] = total;
+      localStorage.setItem('sylvia_2026_data', JSON.stringify(data26));
+      
+      showToast(`已成功匯入第 ${m} 月資料！`);
+      initApp();
+    } catch(err) {
+      showToast('檔案解析失敗，請確認內容格式');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function clearAll(){
+  if(confirm('確定要清除 2026 年上傳的所有資料嗎？')){
+    localStorage.removeItem('sylvia_2026_data');
+    data26 = {};
+    initApp();
+  }
+}
+
+function setView(v){
+  currentView = v;
+  ['btn26','btn25','btn24','btnYoY','btnMoM'].forEach(id => {
+    document.getElementById(id).classList.remove('on');
+  });
+  if(v === '2026') document.getElementById('btn26').classList.add('on');
+  if(v === '2025') document.getElementById('btn25').classList.add('on');
+  if(v === '2024') document.getElementById('btn24').classList.add('on');
+  if(v === 'yoy') document.getElementById('btnYoY').classList.add('on');
+  if(v === 'mom') document.getElementById('btnMoM').classList.add('on');
+  renderDashboard();
+}
+
+function initApp(){
+  const has26 = Object.keys(data26).length > 0;
+  const mTags = document.getElementById('mTags');
+  mTags.innerHTML = '';
+  
+  if(has26){
+    document.getElementById('uploadSection').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('savedBar').style.display = 'flex';
+    
+    Object.keys(data26).forEach(m => {
+      mTags.innerHTML += `<span class="m-tag">${m}月 <span class="m-del" onclick="deleteMonth(${m})">×</span></span>`;
+    });
+    document.getElementById('fileInfo').innerText = `2026年：已載入 ${Object.keys(data26).length} 個月`;
+  } else {
+    document.getElementById('uploadSection').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('savedBar').style.display = 'none';
+    document.getElementById('fileInfo').innerText = '2026年：尚未載入';
+  }
+  renderDashboard();
+}
+
+function deleteMonth(m){
+  delete data26[m];
+  localStorage.setItem('sylvia_2026_data', JSON.stringify(data26));
+  initApp();
+}
+
+function renderDashboard(){
+  renderKPI();
+  renderCharts();
+  renderTable();
+}
+
+function renderKPI(){
+  const kpiRow = document.getElementById('kpiRow');
+  let latestM = Object.keys(data26).length || 12;
+  let curVal = data26[latestM] || data25[latestM];
+  let prevVal = data25[latestM];
+  let yoy = ((curVal - prevVal) / prevVal * 100).toFixed(1);
+  
+  kpiRow.innerHTML = `
+    <div class="kpi" style="--c1:#1d6f42;--c2:#2e7d32">
+      <div class="kpi-lbl">當期應收帳款</div>
+      <div class="kpi-val">NTD ${curVal.toLocaleString()}</div>
+      <div class="kpi-sub">最新數據月份：${latestM} 月</div>
+    </div>
+    <div class="kpi" style="--c1:#2e7d32;--c2:#f5a623">
+      <div class="kpi-lbl">YoY 同期比較</div>
+      <div class="kpi-val">${yoy}%</div>
+      <div class="kpi-badge ${yoy >= 0 ? 'b-up' : 'b-dn'}">${yoy >= 0 ? '▲ 成長' : '▼ 衰退'}</div>
+    </div>
+    <div class="kpi" style="--c1:#f5a623;--c2:#7b1fa2">
+      <div class="kpi-lbl">年度總計</div>
+      <div class="kpi-val">NTD ${Object.values(data26).reduce((a,b)=>a+b,0).toLocaleString()}</div>
+      <div class="kpi-sub">2026 累計至今</div>
+    </div>
+  `;
+}
+
+function renderCharts(){
+  const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  
+  if(lineChartInst) lineChartInst.destroy();
+  const ctxLine = document.getElementById('lineC').getContext('2d');
+  lineChartInst = new Chart(ctxLine, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: '2026年', data: Object.values(data26), borderColor: '#1d6f42', backgroundColor: 'rgba(29,111,66,0.1)', fill: true },
+        { label: '2025年', data: Object.values(data25), borderColor: '#f5a623', borderDash: [4,4] }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function renderTable(){
+  const tHead = document.getElementById('tHead');
+  const tBody = document.getElementById('tBody');
+  tHead.innerHTML = `<tr><th>客戶名稱</th><th class="r">2026 金額</th><th class="r">2025 金額</th><th class="r">YoY</th></tr>`;
+  
+  const mockClients = ['公司 A', '公司 B', '公司 C', '公司 D', '公司 E'];
+  tBody.innerHTML = mockClients.map(c => `
+    <tr>
+      <td>${c}</td>
+      <td class="r">NTD ${(Math.random()*100000+50000).toFixed(0)}</td>
+      <td class="r">NTD ${(Math.random()*100000+50000).toFixed(0)}</td>
+      <td class="r"><span class="pill p-up">+${(Math.random()*15).toFixed(1)}%</span></td>
+    </tr>
+  `).join('');
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
