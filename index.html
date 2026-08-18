@@ -18,12 +18,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
   --bg:#0f1117;--surface:#181c27;--surface2:#1e2333;
-  --border:rgba(255,255,255,0.1);
-  /* A 方案：巴西世足高對比配色 (黃, 綠, 藍) */
-  --yellow:#ffda27;
-  --green:#00df6c;
-  --blue:#00a3ff;
-  --danger:#ff4d4d;
+  --border:rgba(255,255,255,0.07);
+  --accent:#4f9eff;--accent2:#36d9a0;--accent3:#f5a623;
+  --danger:#ff5f57;--purple:#d97bff;
   --text:#e8eaf0;--text2:#8892a4;--text3:#4d5568;
   --radius:12px;--mono:'DM Mono',monospace;--sans:'Noto Sans TC',sans-serif;
 }
@@ -31,50 +28,99 @@
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh}
 header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--yellow),var(--green));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#0f1117}
+.logo-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#ffb3c6,#ffaa70);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
 .logo-text{font-size:15px;font-weight:500}
 .logo-sub{font-size:11px;color:var(--text2);margin-top:1px}
 .hdr-right{display:flex;align-items:center;gap:10px}
 #fileInfo{font-size:11px;color:var(--text2);font-family:var(--mono)}
 
 /* Toast */
-#toast{display:none;position:fixed;top:68px;left:50%;transform:translateX(-50%);background:var(--green);color:#0f1117;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:700;z-index:999;box-shadow:0 4px 16px rgba(0,223,108,.3)}
+#toast{display:none;position:fixed;top:68px;left:50%;transform:translateX(-50%);background:#36d9a0;color:#0f1117;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.3)}
 
-/* Upload Zone */
+/* Upload */
 #uploadSection{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px);padding:40px}
 .drop-zone{width:100%;max-width:500px;border:2px dashed var(--border);border-radius:20px;padding:56px 40px;text-align:center;cursor:pointer;transition:all .25s;background:var(--surface)}
-.drop-zone:hover,.drop-zone.over{border-color:var(--yellow);background:rgba(255,218,39,.05);transform:translateY(-2px)}
+.drop-zone:hover,.drop-zone.over{border-color:var(--accent);background:rgba(79,158,255,.05);transform:translateY(-2px)}
 .drop-icon{font-size:40px;margin-bottom:16px}
 .drop-title{font-size:18px;font-weight:500;margin-bottom:8px}
 .drop-sub{font-size:13px;color:var(--text2);line-height:1.6}
-.drop-btn{display:inline-block;margin-top:22px;padding:10px 24px;background:var(--yellow);color:#0f1117;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+.drop-btn{display:inline-block;margin-top:22px;padding:10px 24px;background:var(--accent);color:#fff;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer}
 .drop-hint{margin-top:14px;font-size:11px;color:var(--text3);font-family:var(--mono)}
-.data-status{margin-top:20px;padding:14px 20px;background:rgba(0,223,108,.08);border:1px solid rgba(0,223,108,.2);border-radius:10px;font-size:12px;color:var(--green);max-width:500px;width:100%;line-height:1.8}
+.data-status{margin-top:20px;padding:14px 20px;background:rgba(54,217,160,.08);border:1px solid rgba(54,217,160,.2);border-radius:10px;font-size:12px;color:var(--accent2);max-width:500px;width:100%;line-height:1.8}
 
-/* Dashboard Controls & Layout */
+/* SavedBar */
 #savedBar{display:none;padding:9px 28px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap}
 .m-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:11px;font-family:var(--mono)}
 .m-del{cursor:pointer;color:var(--text3);margin-left:2px}
 .m-del:hover{color:var(--danger)}
-.btn-clear{margin-left:auto;padding:3px 9px;border-radius:5px;border:1px solid rgba(255,77,77,.3);background:transparent;color:var(--danger);font-size:11px;cursor:pointer;font-family:var(--sans)}
+.btn-clear{margin-left:auto;padding:3px 9px;border-radius:5px;border:1px solid rgba(255,95,87,.3);background:transparent;color:var(--danger);font-size:11px;cursor:pointer;font-family:var(--sans)}
 
+/* Dashboard */
 #dashboard{display:none;padding:22px 28px 40px}
+
+/* View bar */
 .view-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
 .view-title{font-size:16px;font-weight:600;margin-right:auto;letter-spacing:-.01em}
-.view-title span{color:var(--yellow)}
+.view-title span{color:var(--accent)}
 .toggle-grp{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .t-btn{padding:6px 16px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:var(--sans);transition:all .15s}
-.t-btn.on{background:var(--yellow);color:#0f1117;font-weight:700}
+.t-btn.on{background:var(--accent);color:#fff}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.kpi-lbl{font-size:10.5px;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.kpi-val{font-size:20px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em}
+.kpi-sub{font-size:11px;color:var(--text2);margin-top:5px}
+.kpi-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:var(--mono);padding:2px 6px;border-radius:4px;margin-top:4px}
+.b-up{background:rgba(54,217,160,.15);color:var(--accent2)}
+.b-dn{background:rgba(255,95,87,.15);color:var(--danger)}
+
+/* Charts */
+.chart-row{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:20px}
+.chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:500}
+.card-sub{font-size:11px;color:var(--text2)}
+.leg-row{display:flex;gap:12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+.chart-wrap{position:relative}
+
+/* Table */
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.tbl-bar{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tbl-title{font-size:13px;font-weight:500;margin-right:auto}
+.srch{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 11px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;width:170px}
+.srch:focus{border-color:var(--accent)}
+.srch::placeholder{color:var(--text3)}
+select.ctrl{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 9px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;cursor:pointer}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{padding:10px 13px;text-align:left;font-size:10.5px;font-weight:500;color:var(--text2);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--surface)}
+thead th.r{text-align:right}
+tbody td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
+tbody td.r{text-align:right;font-family:var(--mono);font-size:12px}
+tbody td.dim{color:var(--text2);font-family:var(--mono);font-size:11px}
+tbody tr:hover td{background:rgba(255,255,255,.03)}
+tbody tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;font-family:var(--mono)}
+.p-up{background:rgba(180,230,180,.25);color:#5ab87a}
+.p-dn{background:rgba(255,180,180,.25);color:#ff8a8a}
+.p-new{background:rgba(255,179,198,.25);color:#ffb3c6}
+.p-na{background:rgba(255,200,150,.25);color:#ffaa70}
+.tbl-foot{padding:9px 18px;font-size:11px;color:var(--text3);text-align:right;border-top:1px solid var(--border);font-family:var(--mono)}
 
 .btn-hdr{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--sans);transition:all .2s}
-.btn-hdr:hover{border-color:var(--yellow);color:var(--yellow)}
+.btn-hdr:hover{border-color:var(--accent);color:var(--accent)}
+
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.chart-row,.chart-row2{grid-template-columns:1fr}#dashboard{padding:14px}header{padding:12px 14px}}
 </style>
 </head>
 <body>
 <div id="toast"></div>
-
-<!-- 統一只使用一個隱藏的 file input，避免相容性或找不到控制項的問題 -->
-<input type="file" id="globalFileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
 
 <header>
   <div class="logo">
@@ -83,7 +129,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
   </div>
   <div class="hdr-right">
     <span id="fileInfo">2026年：尚未載入</span>
-    <button class="btn-hdr" onclick="triggerFileUpload()">➕ 新增月份</button>
+    <button class="btn-hdr" onclick="document.getElementById('fi2').click()">➕ 新增月份</button>
+    <input type="file" id="fi2" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
   </div>
 </header>
 
@@ -94,11 +141,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 </div>
 
 <div id="uploadSection">
-  <div class="drop-zone" id="dz" onclick="triggerFileUpload()">
+  <div class="drop-zone" id="dz">
     <div class="drop-icon">📊</div>
-    <div class="drop-title">拖曳或點擊選擇 2026 年 Excel</div>
+    <div class="drop-title">拖曳 2026 年 Excel 到這裡</div>
     <div class="drop-sub">每月上傳自動疊加，不覆蓋舊資料<br>2024、2025 全年資料已內建</div>
-    <div class="drop-btn">選擇檔案</div>
+    <label class="drop-btn" for="fi">選擇檔案</label>
+    <input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
     <div class="drop-hint">支援格式：.xlsx / .xls</div>
   </div>
   <div class="data-status">
@@ -119,87 +167,662 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
       <button class="t-btn" id="btnMoM" onclick="setView('mom')">MoM月增率</button>
     </div>
   </div>
+
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="chart-row">
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title" id="barTitle">前10大客戶</div><div class="card-sub" id="barSub"></div></div>
+        <div class="leg-row" id="barLeg"></div>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="barC"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title">月趨勢</div><div class="card-sub" id="lineSub"></div></div>
+        <div class="leg-row" id="lineLeg"></div>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="lineC"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-row2">
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title" id="yoyBarTitle">YoY 年增率（前10名）</div><div class="card-sub" id="yoyBarSub"></div></div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="yoyBarC"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <div><div class="card-title" id="momBarTitle">MoM 月增率</div><div class="card-sub" id="momBarSub"></div></div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="momBarC"></canvas></div>
+    </div>
+  </div>
+
+  <div class="tbl-card">
+    <div class="tbl-bar">
+      <span class="tbl-title">客戶明細</span>
+      <input class="srch" id="srch" placeholder="搜尋客戶名稱/編號…" oninput="renderTable()">
+      <select class="ctrl" id="tSort" onchange="renderTable()">
+        <option value="latest">最新月↓</option>
+        <option value="total">累計↓</option>
+        <option value="yoy">YoY↓</option>
+        <option value="name">名稱</option>
+      </select>
+      <select class="ctrl" id="tFilter" onchange="renderTable()">
+        <option value="all">全部客戶</option>
+        <option value="active">最新月有資料</option>
+        <option value="new">最新月新增</option>
+        <option value="miss">最新月無資料</option>
+      </select>
+    </div>
+    <div class="tbl-wrap"><table><thead id="tHead"></thead><tbody id="tBody"></tbody></table></div>
+    <div class="tbl-foot" id="tFoot"></div>
+  </div>
 </div>
 
 <script>
-// 1. 觸發檔案選擇器
-function triggerFileUpload() {
-  const fileInput = document.getElementById('globalFileInput');
-  fileInput.value = ''; // 清空預設值，確保連續選擇同檔案能正常觸發
-  fileInput.click();
+// ── 內建資料（三年）──
+const DATA = {
+  2024: [{"id":"A15003","name":"三元第","1月":837696,"1月_tax":41885,"2月":464784,"2月_tax":23239,"3月":73680,"3月_tax":3684,"4月":614160,"4月_tax":30708,"5月":211320,"5月_tax":10566,"6月":318360,"6月_tax":15918,"7月":60720,"7月_tax":3036,"8月":762060,"8月_tax":38103,"9月":54000,"9月_tax":2700,"10月":523680,"10月_tax":26184,"11月":670560,"11月_tax":33528,"12月":45120,"12月_tax":2256},{"id":"A15007","name":"文正","1月":733603,"1月_tax":12000,"2月":355383,"2月_tax":6000,"3月":160247,"3月_tax":2640,"4月":189366,"4月_tax":3156,"5月":340722,"5月_tax":0,"6月":193224,"6月_tax":3200,"7月":218584,"7月_tax":3645,"8月":240830,"8月_tax":3948,"9月":307154,"9月_tax":5104,"10月":283418,"10月_tax":4033,"11月":346716,"11月_tax":5781,"12月":602560,"12月_tax":0},{"id":"A15011","name":"長億","1月":140400,"1月_tax":7020,"2月":120720,"2月_tax":6036,"3月":0,"3月_tax":0,"4月":25920,"4月_tax":1296,"5月":91360,"5月_tax":4568,"6月":33120,"6月_tax":1656,"7月":38640,"7月_tax":1932,"8月":55640,"8月_tax":2782,"9月":85872,"9月_tax":4294,"10月":50640,"10月_tax":2105,"11月":5796,"11月_tax":290,"12月":29024,"12月_tax":1451},{"id":"A15017","name":"統富","1月":330,"1月_tax":17,"2月":42240,"2月_tax":2112,"3月":26400,"3月_tax":1104,"4月":206880,"4月_tax":10344,"5月":52800,"5月_tax":2640,"6月":15840,"6月_tax":787,"7月":26400,"7月_tax":1320,"8月":63360,"8月_tax":3168,"9月":68640,"9月_tax":3432,"10月":29952,"10月_tax":1498,"11月":101070,"11月_tax":5054,"12月":50400,"12月_tax":2520},{"id":"A15020","name":"錦芳","1月":60402,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":28392,"4月_tax":0,"5月":27768,"5月_tax":1388,"6月":12000,"6月_tax":556,"7月":19560,"7月_tax":978,"8月":19200,"8月_tax":960,"9月":31380,"9月_tax":1569,"10月":9000,"10月_tax":450,"11月":25200,"11月_tax":1260,"12月":43200,"12月_tax":2160},{"id":"A15023","name":"五州","1月":34712,"1月_tax":0,"2月":15724,"2月_tax":786,"3月":10200,"3月_tax":510,"4月":20908,"4月_tax":0,"5月":14538,"5月_tax":0,"6月":12548,"6月_tax":0,"7月":2592,"7月_tax":0,"8月":7260,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":660,"11月_tax":0,"12月":1980,"12月_tax":0},{"id":"A15026","name":"太新","1月":0,"1月_tax":0,"2月":24000,"2月_tax":0,"3月":30000,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":36000,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15028","name":"文華","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":12000,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":12324,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15029","name":"王萬益","1月":52800,"1月_tax":0,"2月":128088,"2月_tax":0,"3月":33840,"3月_tax":0,"4月":27390,"4月_tax":0,"5月":1130,"5月_tax":0,"6月":24300,"6月_tax":0,"7月":0,"7月_tax":0,"8月":26010,"8月_tax":0,"9月":12150,"9月_tax":0,"10月":8850,"10月_tax":0,"11月":26400,"11月_tax":0,"12月":35688,"12月_tax":0},{"id":"A15030","name":"巨林","1月":12480,"1月_tax":624,"2月":0,"2月_tax":0,"3月":6000,"3月_tax":300,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":6080,"7月_tax":304,"8月":5400,"8月_tax":270,"9月":6000,"9月_tax":300,"10月":0,"10月_tax":0,"11月":6000,"11月_tax":300,"12月":0,"12月_tax":0},{"id":"A15032","name":"永成","1月":19344,"1月_tax":0,"2月":12000,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":6000,"8月_tax":0,"9月":0,"9月_tax":0,"10月":6240,"10月_tax":0,"11月":0,"11月_tax":0,"12月":16848,"12月_tax":0},{"id":"A15035","name":"立成","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":6210,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":6210,"7月_tax":0,"8月":0,"8月_tax":0,"9月":6210,"9月_tax":0,"10月":0,"10月_tax":0,"11月":20643,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15039","name":"名信","1月":87696,"1月_tax":0,"2月":37584,"2月_tax":0,"3月":35676,"3月_tax":0,"4月":70068,"4月_tax":0,"5月":59280,"5月_tax":0,"6月":52632,"6月_tax":0,"7月":89952,"7月_tax":0,"8月":70848,"8月_tax":0,"9月":25356,"9月_tax":0,"10月":34344,"10月_tax":0,"11月":43644,"11月_tax":0,"12月":70332,"12月_tax":0},{"id":"A15040","name":"名統","1月":69090,"1月_tax":0,"2月":87906,"2月_tax":0,"3月":0,"3月_tax":0,"4月":5880,"4月_tax":0,"5月":26460,"5月_tax":0,"6月":12936,"6月_tax":0,"7月":5880,"7月_tax":0,"8月":28812,"8月_tax":0,"9月":18816,"9月_tax":0,"10月":0,"10月_tax":0,"11月":12936,"11月_tax":0,"12月":5880,"12月_tax":0},{"id":"A15041","name":"名翔","1月":285744,"1月_tax":0,"2月":297534,"2月_tax":0,"3月":30450,"3月_tax":0,"4月":72246,"4月_tax":0,"5月":147648,"5月_tax":0,"6月":138534,"6月_tax":0,"7月":41634,"7月_tax":0,"8月":140724,"8月_tax":0,"9月":15762,"9月_tax":0,"10月":94250,"10月_tax":0,"11月":58494,"11月_tax":0,"12月":176022,"12月_tax":0},{"id":"A15043","name":"旭聖旺","1月":61344,"1月_tax":3067,"2月":0,"2月_tax":0,"3月":17160,"3月_tax":0,"4月":23520,"4月_tax":1176,"5月":21000,"5月_tax":1050,"6月":9000,"6月_tax":450,"7月":36000,"7月_tax":1800,"8月":25200,"8月_tax":1260,"9月":12000,"9月_tax":600,"10月":18480,"10月_tax":556,"11月":43044,"11月_tax":2152,"12月":52986,"12月_tax":2649},{"id":"A15045","name":"克堤斯","1月":32928,"1月_tax":0,"2月":31164,"2月_tax":0,"3月":0,"3月_tax":0,"4月":2352,"4月_tax":0,"5月":4704,"5月_tax":0,"6月":15072,"6月_tax":0,"7月":3528,"7月_tax":0,"8月":30264,"8月_tax":0,"9月":0,"9月_tax":0,"10月":11904,"10月_tax":0,"11月":2646,"11月_tax":0,"12月":6024,"12月_tax":0},{"id":"A15046","name":"均益","1月":54240,"1月_tax":0,"2月":24000,"2月_tax":0,"3月":0,"3月_tax":0,"4月":23508,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":31200,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":16080,"11月_tax":0,"12月":22152,"12月_tax":0},{"id":"A15049","name":"佳崚","1月":141424,"1月_tax":0,"2月":70446,"2月_tax":3522,"3月":43044,"3月_tax":2152,"4月":18198,"4月_tax":910,"5月":50802,"5月_tax":2540,"6月":22416,"6月_tax":1121,"7月":37554,"7月_tax":1878,"8月":52166,"8月_tax":2608,"9月":41412,"9月_tax":2071,"10月":50058,"10月_tax":2503,"11月":74218,"11月_tax":3711,"12月":129306,"12月_tax":6465},{"id":"A15052","name":"宜羿","1月":0,"1月_tax":0,"2月":52200,"2月_tax":2610,"3月":42000,"3月_tax":2100,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":12000,"7月_tax":600,"8月":0,"8月_tax":0,"9月":18000,"9月_tax":900,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":34800,"12月_tax":1740},{"id":"A15054","name":"延隆","1月":49200,"1月_tax":0,"2月":54000,"2月_tax":0,"3月":40500,"3月_tax":0,"4月":31812,"4月_tax":0,"5月":83652,"5月_tax":0,"6月":23250,"6月_tax":0,"7月":45750,"7月_tax":0,"8月":66060,"8月_tax":0,"9月":23100,"9月_tax":0,"10月":44400,"10月_tax":0,"11月":78984,"11月_tax":0,"12月":30432,"12月_tax":0},{"id":"A15055","name":"易村","1月":75168,"1月_tax":0,"2月":39072,"2月_tax":0,"3月":12000,"3月_tax":0,"4月":34240,"4月_tax":0,"5月":18000,"5月_tax":0,"6月":0,"6月_tax":0,"7月":28240,"7月_tax":0,"8月":35440,"8月_tax":0,"9月":0,"9月_tax":0,"10月":30000,"10月_tax":0,"11月":12000,"11月_tax":0,"12月":24000,"12月_tax":0},{"id":"A15056","name":"昇川","1月":78864,"1月_tax":0,"2月":44520,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":3400,"7月_tax":0,"8月":0,"8月_tax":0,"9月":15560,"9月_tax":0,"10月":3000,"10月_tax":0,"11月":6300,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15057","name":"金泰","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":9540,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":9540,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":12720,"12月_tax":0},{"id":"A15059","name":"信昌","1月":40836,"1月_tax":0,"2月":58920,"2月_tax":0,"3月":0,"3月_tax":0,"4月":21996,"4月_tax":0,"5月":24066,"5月_tax":0,"6月":100278,"6月_tax":0,"7月":0,"7月_tax":0,"8月":19800,"8月_tax":0,"9月":0,"9月_tax":0,"10月":28800,"10月_tax":0,"11月":31320,"11月_tax":0,"12月":58464,"12月_tax":0},{"id":"A15061","name":"威麗士","1月":108424,"1月_tax":5421,"2月":0,"2月_tax":0,"3月":17400,"3月_tax":870,"4月":5760,"4月_tax":288,"5月":5800,"5月_tax":290,"6月":19800,"6月_tax":990,"7月":11600,"7月_tax":580,"8月":28700,"8月_tax":1435,"9月":5800,"9月_tax":290,"10月":15700,"10月_tax":785,"11月":22350,"11月_tax":0,"12月":48568,"12月_tax":1529},{"id":"A15062","name":"帝典","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":27000,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15066","name":"益鋒","1月":144000,"1月_tax":0,"2月":135000,"2月_tax":0,"3月":0,"3月_tax":0,"4月":19200,"4月_tax":0,"5月":54000,"5月_tax":0,"6月":12000,"6月_tax":0,"7月":0,"7月_tax":0,"8月":87000,"8月_tax":0,"9月":0,"9月_tax":0,"10月":21000,"10月_tax":0,"11月":17700,"11月_tax":0,"12月":46200,"12月_tax":0},{"id":"A15067","name":"陳財旺","1月":84042,"1月_tax":0,"2月":13200,"2月_tax":0,"3月":0,"3月_tax":0,"4月":43380,"4月_tax":0,"5月":6360,"5月_tax":0,"6月":7404,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":19080,"9月_tax":0,"10月":31104,"10月_tax":0,"11月":106194,"11月_tax":0,"12月":13608,"12月_tax":0},{"id":"A15069","name":"期美","1月":612,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":612,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":306,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15073","name":"華成","1月":0,"1月_tax":0,"2月":40600,"2月_tax":2030,"3月":0,"3月_tax":0,"4月":11600,"4月_tax":580,"5月":40600,"5月_tax":2030,"6月":30728,"6月_tax":1536,"7月":0,"7月_tax":0,"8月":34510,"8月_tax":1726,"9月":11600,"9月_tax":580,"10月":40600,"10月_tax":2030,"11月":0,"11月_tax":0,"12月":5800,"12月_tax":290},{"id":"A15075","name":"雅格","1月":27600,"1月_tax":1380,"2月":0,"2月_tax":0,"3月":15960,"3月_tax":798,"4月":0,"4月_tax":0,"5月":12000,"5月_tax":600,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":10800,"8月_tax":540,"9月":0,"9月_tax":0,"10月":9000,"10月_tax":450,"11月":0,"11月_tax":0,"12月":46320,"12月_tax":2316},{"id":"A15076","name":"新富","1月":6996,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":21942,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":16656,"9月_tax":0,"10月":2226,"10月_tax":0,"11月":6360,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15078","name":"義興","1月":0,"1月_tax":0,"2月":6360,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":3816,"5月_tax":0,"6月":0,"6月_tax":0,"7月":3816,"7月_tax":0,"8月":0,"8月_tax":0,"9月":3816,"9月_tax":0,"10月":2544,"10月_tax":0,"11月":4452,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15080","name":"鈺廣泰","1月":80736,"1月_tax":0,"2月":50838,"2月_tax":0,"3月":2940,"3月_tax":0,"4月":26268,"4月_tax":0,"5月":24768,"5月_tax":0,"6月":16374,"6月_tax":0,"7月":7056,"7月_tax":0,"8月":9012,"8月_tax":0,"9月":19836,"9月_tax":0,"10月":17106,"10月_tax":0,"11月":22956,"11月_tax":0,"12月":14886,"12月_tax":0},{"id":"A15082","name":"綺麗八德","1月":27540,"1月_tax":0,"2月":24480,"2月_tax":0,"3月":6264,"3月_tax":0,"4月":30120,"4月_tax":0,"5月":26664,"5月_tax":0,"6月":6120,"6月_tax":0,"7月":22752,"7月_tax":0,"8月":6084,"8月_tax":0,"9月":6120,"9月_tax":0,"10月":18300,"10月_tax":0,"11月":5472,"11月_tax":0,"12月":14202,"12月_tax":0},{"id":"A15085","name":"銓統","1月":0,"1月_tax":0,"2月":35280,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":38220,"6月_tax":0,"7月":0,"7月_tax":0,"8月":29400,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15086","name":"德鎧","1月":19284,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":1200,"7月_tax":0,"8月":0,"8月_tax":0,"9月":6500,"9月_tax":0,"10月":5600,"10月_tax":0,"11月":0,"11月_tax":0,"12月":10044,"12月_tax":502},{"id":"A15087","name":"震輝","1月":87660,"1月_tax":2343,"2月":12000,"2月_tax":594,"3月":18090,"3月_tax":905,"4月":58788,"4月_tax":2939,"5月":53892,"5月_tax":2695,"6月":39720,"6月_tax":1986,"7月":18000,"7月_tax":900,"8月":44070,"8月_tax":2204,"9月":7890,"9月_tax":395,"10月":50274,"10月_tax":2514,"11月":122184,"11月_tax":6109,"12月":58536,"12月_tax":2927},{"id":"A15088","name":"繁星","1月":108216,"1月_tax":5411,"2月":45072,"2月_tax":1638,"3月":13200,"3月_tax":660,"4月":24000,"4月_tax":1200,"5月":111600,"5月_tax":5580,"6月":0,"6月_tax":0,"7月":58650,"7月_tax":2933,"8月":41700,"8月_tax":2085,"9月":27900,"9月_tax":1395,"10月":39600,"10月_tax":1980,"11月":56568,"11月_tax":2828,"12月":117744,"12月_tax":5887},{"id":"A15089","name":"寶立昌","1月":7116,"1月_tax":0,"2月":5112,"2月_tax":0,"3月":5088,"3月_tax":0,"4月":19236,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":8412,"7月_tax":0,"8月":2568,"8月_tax":0,"9月":0,"9月_tax":0,"10月":13140,"10月_tax":0,"11月":0,"11月_tax":0,"12月":13590,"12月_tax":0},{"id":"A15090","name":"九龍","1月":26400,"1月_tax":1320,"2月":0,"2月_tax":0,"3月":69400,"3月_tax":3470,"4月":26400,"4月_tax":1320,"5月":15840,"5月_tax":792,"6月":26070,"6月_tax":1304,"7月":52140,"7月_tax":2607,"8月":38520,"8月_tax":1926,"9月":21120,"9月_tax":1056,"10月":46530,"10月_tax":2273,"11月":32720,"11月_tax":1636,"12月":37480,"12月_tax":1874},{"id":"A15093","name":"全家樂","1月":1980,"1月_tax":99,"2月":0,"2月_tax":0,"3月":4620,"3月_tax":231,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15101","name":"耐爾吉斯","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":696,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":684,"12月_tax":0},{"id":"A15102","name":"秦先生","1月":4788,"1月_tax":0,"2月":7524,"2月_tax":0,"3月":0,"3月_tax":0,"4月":8448,"4月_tax":0,"5月":0,"5月_tax":0,"6月":3762,"6月_tax":0,"7月":6960,"7月_tax":0,"8月":0,"8月_tax":0,"9月":7644,"9月_tax":0,"10月":0,"10月_tax":0,"11月":7080,"11月_tax":0,"12月":9696,"12月_tax":0},{"id":"A15113","name":"方盛育","1月":266760,"1月_tax":0,"2月":300048,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":443448,"12月_tax":0},{"id":"A15114","name":"楊淑貞","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":11868,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":6156,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15118","name":"鄭榮泰","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":1700,"3月_tax":0,"4月":1360,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":1020,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15121","name":"謝小姐","1月":0,"1月_tax":0,"2月":5026,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":740,"8月_tax":0,"9月":0,"9月_tax":0,"10月":1850,"10月_tax":0,"11月":0,"11月_tax":0,"12月":1392,"12月_tax":0},{"id":"A15125","name":"洺葳","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":660,"12月_tax":0},{"id":"A15129","name":"零售","1月":0,"1月_tax":0,"2月":3900,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":800,"6月_tax":0,"7月":300,"7月_tax":0,"8月":780,"8月_tax":0,"9月":0,"9月_tax":0,"10月":1800,"10月_tax":0,"11月":300,"11月_tax":0,"12月":400,"12月_tax":0},{"id":"A15130","name":"元正","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":15000,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15132","name":"綺麗-李","1月":27540,"1月_tax":0,"2月":24480,"2月_tax":0,"3月":0,"3月_tax":0,"4月":12240,"4月_tax":0,"5月":18360,"5月_tax":0,"6月":22020,"6月_tax":0,"7月":0,"7月_tax":0,"8月":18360,"8月_tax":0,"9月":0,"9月_tax":0,"10月":21420,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15133","name":"匯勤","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":765787,"9月_tax":38290,"10月":3519857,"10月_tax":175993,"11月":964603,"11月_tax":48230,"12月":0,"12月_tax":0},{"id":"A15134","name":"聯端","1月":0,"1月_tax":0,"2月":45120,"2月_tax":2256,"3月":107160,"3月_tax":5358,"4月":163560,"4月_tax":8178,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":104400,"10月_tax":5220,"11月":117900,"11月_tax":5895,"12月":36000,"12月_tax":1778},{"id":"A15134-1","name":"虹岠","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":48000,"6月_tax":2400,"7月":30000,"7月_tax":1500,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15136","name":"優特麗","1月":46532,"1月_tax":0,"2月":12024,"2月_tax":0,"3月":7620,"3月_tax":0,"4月":3480,"4月_tax":0,"5月":10200,"5月_tax":0,"6月":1320,"6月_tax":0,"7月":696,"7月_tax":0,"8月":330,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":4400,"12月_tax":0},{"id":"A15149","name":"恭赫","1月":33810,"1月_tax":1691,"2月":33760,"2月_tax":1688,"3月":11760,"3月_tax":588,"4月":23520,"4月_tax":1176,"5月":27880,"5月_tax":1394,"6月":51400,"6月_tax":2570,"7月":35280,"7月_tax":1764,"8月":22000,"8月_tax":1100,"9月":11000,"9月_tax":550,"10月":63160,"10月_tax":3158,"11月":21240,"11月_tax":1062,"12月":53480,"12月_tax":2674},{"id":"A15152","name":"益祥","1月":5280,"1月_tax":0,"2月":57120,"2月_tax":0,"3月":27984,"3月_tax":0,"4月":36360,"4月_tax":0,"5月":13380,"5月_tax":0,"6月":18598,"6月_tax":0,"7月":20820,"7月_tax":0,"8月":20184,"8月_tax":0,"9月":36288,"9月_tax":0,"10月":12374,"10月_tax":0,"11月":34518,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15158","name":"宋襄儀","1月":20868,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":8760,"7月_tax":0,"8月":4080,"8月_tax":0,"9月":0,"9月_tax":0,"10月":19344,"10月_tax":0,"11月":600,"11月_tax":0,"12月":51168,"12月_tax":0},{"id":"A15165","name":"鳳雄","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":7200,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":7200,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15166","name":"芽比","1月":8400,"1月_tax":420,"2月":0,"2月_tax":0,"3月":29700,"3月_tax":1485,"4月":0,"4月_tax":0,"5月":34650,"5月_tax":1733,"6月":24750,"6月_tax":1238,"7月":9900,"7月_tax":495,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":55350,"11月_tax":2768,"12月":35100,"12月_tax":1755},{"id":"A15170","name":"上友","1月":61776,"1月_tax":0,"2月":12000,"2月_tax":0,"3月":0,"3月_tax":0,"4月":9150,"4月_tax":0,"5月":13416,"5月_tax":0,"6月":13458,"6月_tax":0,"7月":16134,"7月_tax":0,"8月":8400,"8月_tax":0,"9月":5670,"9月_tax":0,"10月":7470,"10月_tax":0,"11月":34140,"11月_tax":0,"12月":55056,"12月_tax":0},{"id":"A15179","name":"冠軍","1月":47580,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":3058,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":12000,"10月_tax":0,"11月":0,"11月_tax":0,"12月":12870,"12月_tax":0},{"id":"A15184","name":"明星","1月":24480,"1月_tax":1224,"2月":6120,"2月_tax":306,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15187","name":"鎰懋","1月":5880,"1月_tax":294,"2月":5880,"2月_tax":294,"3月":5880,"3月_tax":294,"4月":7056,"4月_tax":353,"5月":5880,"5月_tax":294,"6月":5880,"6月_tax":294,"7月":5880,"7月_tax":294,"8月":11760,"8月_tax":588,"9月":7056,"9月_tax":353,"10月":7056,"10月_tax":353,"11月":7056,"11月_tax":353,"12月":7644,"12月_tax":382},{"id":"A15209","name":"飛行者","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":25600,"6月_tax":0,"7月":0,"7月_tax":0,"8月":12800,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15220","name":"東蒙","1月":44460,"1月_tax":2223,"2月":0,"2月_tax":0,"3月":20490,"3月_tax":1025,"4月":84270,"4月_tax":4214,"5月":40680,"5月_tax":2035,"6月":70158,"6月_tax":3508,"7月":88790,"7月_tax":4440,"8月":42360,"8月_tax":2118,"9月":41550,"9月_tax":2078,"10月":61120,"10月_tax":3057,"11月":31160,"11月_tax":1558,"12月":43402,"12月_tax":2170},{"id":"A15223","name":"兔子媽媽","1月":11450,"1月_tax":573,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":8750,"4月_tax":438,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":8068,"7月_tax":403,"8月":9134,"8月_tax":457,"9月":0,"9月_tax":0,"10月":13122,"10月_tax":656,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15224","name":"宥展","1月":28200,"1月_tax":1410,"2月":40440,"2月_tax":2022,"3月":52680,"3月_tax":2634,"4月":35760,"4月_tax":1788,"5月":0,"5月_tax":0,"6月":82800,"6月_tax":4140,"7月":0,"7月_tax":0,"8月":47040,"8月_tax":2352,"9月":0,"9月_tax":0,"10月":52680,"10月_tax":2634,"11月":31080,"11月_tax":1554,"12月":40440,"12月_tax":2022},{"id":"A15227","name":"顏志霖&薛艷麗","1月":9744,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15228","name":"籠興","1月":50820,"1月_tax":2541,"2月":9240,"2月_tax":462,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":63360,"12月_tax":3168},{"id":"A15231","name":"麗佩沛","1月":1183468,"1月_tax":59322,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":1020351,"9月_tax":0,"10月":356186,"10月_tax":68827,"11月":0,"11月_tax":0,"12月":413064,"12月_tax":20653},{"id":"A15233","name":"薆米克","1月":23088,"1月_tax":1154,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":5616,"11月_tax":281,"12月":40728,"12月_tax":2036},{"id":"A15234","name":"三景","1月":20400,"1月_tax":1020,"2月":0,"2月_tax":0,"3月":15300,"3月_tax":765,"4月":0,"4月_tax":0,"5月":16320,"5月_tax":816,"6月":5440,"6月_tax":272,"7月":5440,"7月_tax":272,"8月":0,"8月_tax":0,"9月":16320,"9月_tax":816,"10月":5440,"10月_tax":272,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15235","name":"瓏心電商","1月":441,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":63024,"12月_tax":3151},{"id":"A15237","name":"張家瑜","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":8670,"3月_tax":0,"4月":6300,"4月_tax":0,"5月":10170,"5月_tax":0,"6月":8310,"6月_tax":0,"7月":14220,"7月_tax":0,"8月":12570,"8月_tax":0,"9月":12690,"9月_tax":0,"10月":0,"10月_tax":0,"11月":16470,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15238","name":"天祥宇宙","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":12240,"5月_tax":612,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15239","name":"陳子文","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":20400,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15240","name":"名越行","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":20976,"11月_tax":0,"12月":8190,"12月_tax":0},{"id":"A15241","name":"金便宜","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":20208,"12月_tax":1010},{"id":"A15242","name":"顏子清","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":8064,"12月_tax":0}],
+  2025: [{"id":"A15003","name":"三元第","1月":421800,"1月_tax":21090,"2月":99120,"2月_tax":4956,"3月":59400,"3月_tax":2970,"4月":366600,"4月_tax":18330,"5月":274540,"5月_tax":13727,"6月":506860,"6月_tax":25343,"7月":228800,"7月_tax":11440,"8月":17160,"8月_tax":858,"9月":147600,"9月_tax":7380,"10月":59400,"10月_tax":2970,"11月":523800,"11月_tax":26190,"12月":226680,"12月_tax":11334},{"id":"A15006","name":"天堂鳥","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":540,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15007","name":"文正","1月":899794,"1月_tax":15005,"2月":302387,"2月_tax":5040,"3月":136006,"3月_tax":2246,"4月":123686,"4月_tax":2074,"5月":153518,"5月_tax":2554,"6月":175380,"6月_tax":2700,"7月":214390,"7月_tax":3564,"8月":323618,"8月_tax":5400,"9月":247280,"9月_tax":0,"10月":208704,"10月_tax":3472,"11月":662746,"11月_tax":11052,"12月":732810,"12月_tax":12160},{"id":"A15011","name":"長億","1月":114384,"1月_tax":5719,"2月":98640,"2月_tax":4932,"3月":16560,"3月_tax":828,"4月":0,"4月_tax":0,"5月":499588,"5月_tax":24979,"6月":121050,"6月_tax":6053,"7月":43680,"7月_tax":2184,"8月":33040,"8月_tax":998,"9月":3200,"9月_tax":160,"10月":27600,"10月_tax":1380,"11月":127872,"11月_tax":6394,"12月":67200,"12月_tax":3360},{"id":"A15017","name":"統富","1月":129530,"1月_tax":6477,"2月":15840,"2月_tax":792,"3月":55200,"3月_tax":1980,"4月":0,"4月_tax":0,"5月":21120,"5月_tax":1056,"6月":42240,"6月_tax":2112,"7月":26400,"7月_tax":1320,"8月":15840,"8月_tax":492,"9月":52800,"9月_tax":2640,"10月":45840,"10月_tax":2292,"11月":46020,"11月_tax":2301,"12月":49900,"12月_tax":2495},{"id":"A15020","name":"錦芳","1月":10230,"1月_tax":512,"2月":4800,"2月_tax":240,"3月":4800,"3月_tax":0,"4月":4800,"4月_tax":0,"5月":8194,"5月_tax":0,"6月":4800,"6月_tax":0,"7月":4800,"7月_tax":240,"8月":29250,"8月_tax":1463,"9月":6900,"9月_tax":328,"10月":0,"10月_tax":0,"11月":6000,"11月_tax":300,"12月":63636,"12月_tax":3182},{"id":"A15023","name":"五州","1月":5184,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":12408,"4月_tax":0,"5月":8936,"5月_tax":0,"6月":0,"6月_tax":0,"7月":4442,"7月_tax":0,"8月":6800,"8月_tax":0,"9月":10200,"9月_tax":0,"10月":0,"10月_tax":0,"11月":4218,"11月_tax":0,"12月":3960,"12月_tax":0},{"id":"A15026","name":"太新","1月":30000,"1月_tax":0,"2月":30000,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":6000,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15028","name":"文華","1月":24000,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":7200,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":6000,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":23600,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15029","name":"王萬益","1月":124752,"1月_tax":0,"2月":0,"2月_tax":0,"3月":35160,"3月_tax":0,"4月":35040,"4月_tax":0,"5月":6600,"5月_tax":0,"6月":31950,"6月_tax":0,"7月":10080,"7月_tax":0,"8月":60000,"8月_tax":0,"9月":50700,"9月_tax":0,"10月":28800,"10月_tax":0,"11月":46314,"11月_tax":0,"12月":13200,"12月_tax":0},{"id":"A15030","name":"巨林","1月":0,"1月_tax":0,"2月":6000,"2月_tax":300,"3月":0,"3月_tax":0,"4月":6000,"4月_tax":300,"5月":6160,"5月_tax":308,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":6000,"8月_tax":300,"9月":6000,"9月_tax":300,"10月":6000,"10月_tax":300,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15032","name":"永成","1月":9984,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":6000,"7月_tax":0,"8月":12480,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":21840,"12月_tax":0},{"id":"A15035","name":"立成","1月":0,"1月_tax":0,"2月":4830,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":5520,"5月_tax":0,"6月":0,"6月_tax":0,"7月":5520,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":5520,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15039","name":"名信","1月":73872,"1月_tax":0,"2月":24624,"2月_tax":0,"3月":31620,"3月_tax":0,"4月":42708,"4月_tax":0,"5月":58380,"5月_tax":0,"6月":45348,"6月_tax":0,"7月":41688,"7月_tax":0,"8月":29316,"8月_tax":0,"9月":37548,"9月_tax":0,"10月":31992,"10月_tax":0,"11月":65736,"11月_tax":0,"12月":37584,"12月_tax":0},{"id":"A15040","name":"名統","1月":86436,"1月_tax":0,"2月":0,"2月_tax":0,"3月":30828,"3月_tax":0,"4月":0,"4月_tax":0,"5月":7056,"5月_tax":0,"6月":35868,"6月_tax":0,"7月":0,"7月_tax":0,"8月":7056,"8月_tax":0,"9月":18228,"9月_tax":0,"10月":0,"10月_tax":0,"11月":7056,"11月_tax":0,"12月":8232,"12月_tax":0},{"id":"A15041","name":"名翔","1月":411312,"1月_tax":0,"2月":54270,"2月_tax":0,"3月":79752,"3月_tax":0,"4月":15690,"4月_tax":0,"5月":138522,"5月_tax":0,"6月":132720,"6月_tax":0,"7月":64962,"7月_tax":0,"8月":68622,"8月_tax":0,"9月":113208,"9月_tax":0,"10月":60756,"10月_tax":0,"11月":200790,"11月_tax":0,"12月":260790,"12月_tax":0},{"id":"A15043","name":"旭聖旺","1月":69762,"1月_tax":3488,"2月":12600,"2月_tax":630,"3月":19764,"3月_tax":684,"4月":28440,"4月_tax":1422,"5月":9300,"5月_tax":465,"6月":27000,"6月_tax":1350,"7月":17160,"7月_tax":858,"8月":50760,"8月_tax":2538,"9月":52716,"9月_tax":2636,"10月":31680,"10月_tax":1584,"11月":85500,"11月_tax":4275,"12月":98904,"12月_tax":4945},{"id":"A15045","name":"克堤斯","1月":57384,"1月_tax":0,"2月":3744,"2月_tax":0,"3月":0,"3月_tax":0,"4月":4668,"4月_tax":0,"5月":22182,"5月_tax":0,"6月":9996,"6月_tax":0,"7月":8820,"7月_tax":0,"8月":11820,"8月_tax":0,"9月":13302,"9月_tax":0,"10月":7824,"10月_tax":0,"11月":0,"11月_tax":0,"12月":22746,"12月_tax":0},{"id":"A15046","name":"均益","1月":69816,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":15024,"5月_tax":0,"6月":0,"6月_tax":0,"7月":32472,"7月_tax":0,"8月":6000,"8月_tax":0,"9月":0,"9月_tax":0,"10月":12000,"10月_tax":0,"11月":35616,"11月_tax":0,"12月":29640,"12月_tax":0},{"id":"A15049","name":"佳崚","1月":151572,"1月_tax":7579,"2月":68634,"2月_tax":0,"3月":22068,"3月_tax":1103,"4月":24937,"4月_tax":0,"5月":38630,"5月_tax":1932,"6月":50890,"6月_tax":2545,"7月":26928,"7月_tax":1346,"8月":29816,"8月_tax":1491,"9月":44317,"9月_tax":2216,"10月":45744,"10月_tax":0,"11月":61874,"11月_tax":3094,"12月":96752,"12月_tax":4838},{"id":"A15052","name":"宜羿","1月":15552,"1月_tax":778,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":42000,"4月_tax":2100,"5月":0,"5月_tax":0,"6月":40600,"6月_tax":2030,"7月":0,"7月_tax":0,"8月":12000,"8月_tax":600,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15054","name":"延隆","1月":85200,"1月_tax":0,"2月":52200,"2月_tax":0,"3月":28500,"3月_tax":0,"4月":24390,"4月_tax":0,"5月":81192,"5月_tax":0,"6月":75390,"6月_tax":0,"7月":22770,"7月_tax":0,"8月":46440,"8月_tax":0,"9月":66660,"9月_tax":0,"10月":40680,"10月_tax":0,"11月":12000,"11月_tax":0,"12月":64952,"12月_tax":0},{"id":"A15055","name":"易村","1月":66000,"1月_tax":0,"2月":15600,"2月_tax":0,"3月":0,"3月_tax":0,"4月":6000,"4月_tax":0,"5月":12000,"5月_tax":0,"6月":11120,"6月_tax":0,"7月":0,"7月_tax":0,"8月":53120,"8月_tax":0,"9月":29400,"9月_tax":0,"10月":35040,"10月_tax":0,"11月":36000,"11月_tax":0,"12月":12000,"12月_tax":0},{"id":"A15056","name":"昇川","1月":10904,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":6360,"5月_tax":0,"6月":16764,"6月_tax":0,"7月":1980,"7月_tax":0,"8月":2640,"8月_tax":0,"9月":6340,"9月_tax":0,"10月":0,"10月_tax":0,"11月":1360,"11月_tax":0,"12月":52464,"12月_tax":0},{"id":"A15057","name":"金泰","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":9540,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":10296,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15059","name":"信昌","1月":79392,"1月_tax":0,"2月":15276,"2月_tax":0,"3月":0,"3月_tax":0,"4月":20964,"4月_tax":0,"5月":0,"5月_tax":0,"6月":10230,"6月_tax":0,"7月":0,"7月_tax":0,"8月":51120,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":43464,"11月_tax":0,"12月":77952,"12月_tax":0},{"id":"A15061","name":"威麗士","1月":44446,"1月_tax":2318,"2月":11600,"2月_tax":580,"3月":0,"3月_tax":0,"4月":16350,"4月_tax":818,"5月":22350,"5月_tax":1118,"6月":9900,"6月_tax":495,"7月":11600,"7月_tax":580,"8月":11600,"8月_tax":580,"9月":45282,"9月_tax":2264,"10月":19800,"10月_tax":990,"11月":43900,"11月_tax":2195,"12月":64736,"12月_tax":3237},{"id":"A15062","name":"帝典","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":10800,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":4620,"12月_tax":0},{"id":"A15065","name":"益昌","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":2400,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15066","name":"益鋒","1月":217200,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":6720,"4月_tax":0,"5月":0,"5月_tax":0,"6月":28800,"6月_tax":0,"7月":54840,"7月_tax":0,"8月":24840,"8月_tax":0,"9月":39600,"9月_tax":0,"10月":21060,"10月_tax":0,"11月":12000,"11月_tax":0,"12月":33900,"12月_tax":0},{"id":"A15067","name":"陳財旺","1月":100302,"1月_tax":0,"2月":9072,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":12720,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":121824,"11月_tax":0,"12月":13608,"12月_tax":0},{"id":"A15069","name":"期美","1月":2448,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":612,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15073","name":"華成","1月":34800,"1月_tax":1740,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":17400,"4月_tax":870,"5月":29000,"5月_tax":1450,"6月":17400,"6月_tax":870,"7月":0,"7月_tax":0,"8月":75400,"8月_tax":3770,"9月":17940,"9月_tax":897,"10月":11600,"10月_tax":580,"11月":24280,"11月_tax":1214,"12月":34800,"12月_tax":1740},{"id":"A15075","name":"雅格","1月":68040,"1月_tax":3402,"2月":4800,"2月_tax":240,"3月":8400,"3月_tax":0,"4月":0,"4月_tax":0,"5月":4200,"5月_tax":0,"6月":12000,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":7200,"9月_tax":360,"10月":7800,"10月_tax":390,"11月":9000,"11月_tax":450,"12月":5400,"12月_tax":270},{"id":"A15076","name":"新富","1月":27432,"1月_tax":0,"2月":0,"2月_tax":0,"3月":6918,"3月_tax":0,"4月":0,"4月_tax":0,"5月":6360,"5月_tax":0,"6月":0,"6月_tax":0,"7月":6360,"7月_tax":0,"8月":0,"8月_tax":0,"9月":6360,"9月_tax":0,"10月":0,"10月_tax":0,"11月":12720,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15078","name":"義興","1月":4452,"1月_tax":0,"2月":5088,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":3816,"5月_tax":0,"6月":5088,"6月_tax":0,"7月":4452,"7月_tax":0,"8月":0,"8月_tax":0,"9月":3180,"9月_tax":0,"10月":0,"10月_tax":0,"11月":2544,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15080","name":"鈺廣泰","1月":78162,"1月_tax":551,"2月":30222,"2月_tax":0,"3月":7380,"3月_tax":697,"4月":6492,"4月_tax":0,"5月":4482,"5月_tax":0,"6月":17580,"6月_tax":0,"7月":8820,"7月_tax":0,"8月":8820,"8月_tax":620,"9月":0,"9月_tax":0,"10月":27672,"10月_tax":411,"11月":19308,"11月_tax":0,"12月":16176,"12月_tax":0},{"id":"A15082","name":"綺麗八德","1月":54384,"1月_tax":0,"2月":5052,"2月_tax":0,"3月":3060,"3月_tax":0,"4月":8532,"4月_tax":0,"5月":4500,"5月_tax":0,"6月":17808,"6月_tax":0,"7月":15984,"7月_tax":0,"8月":6540,"8月_tax":0,"9月":18360,"9月_tax":0,"10月":0,"10月_tax":0,"11月":6588,"11月_tax":0,"12月":684,"12月_tax":0},{"id":"A15085","name":"銓統","1月":8820,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":23520,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15086","name":"德鎧","1月":8184,"1月_tax":0,"2月":1200,"2月_tax":0,"3月":8232,"3月_tax":0,"4月":2352,"4月_tax":0,"5月":4116,"5月_tax":0,"6月":5292,"6月_tax":0,"7月":2176,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":3528,"11月_tax":0,"12月":13824,"12月_tax":0},{"id":"A15087","name":"震輝","1月":133656,"1月_tax":6683,"2月":29346,"2月_tax":1467,"3月":12600,"3月_tax":630,"4月":0,"4月_tax":0,"5月":50262,"5月_tax":1456,"6月":36480,"6月_tax":1824,"7月":24810,"7月_tax":1241,"8月":62784,"8月_tax":3139,"9月":30624,"9月_tax":1531,"10月":13050,"10月_tax":653,"11月":26520,"11月_tax":1326,"12月":99126,"12月_tax":4956},{"id":"A15088","name":"繁星","1月":165024,"1月_tax":8251,"2月":58800,"2月_tax":2940,"3月":13950,"3月_tax":698,"4月":11280,"4月_tax":552,"5月":39450,"5月_tax":1973,"6月":42000,"6月_tax":2100,"7月":48120,"7月_tax":2371,"8月":31200,"8月_tax":1560,"9月":38280,"9月_tax":1914,"10月":19200,"10月_tax":960,"11月":127062,"11月_tax":6353,"12月":118950,"12月_tax":5948},{"id":"A15089","name":"寶立昌","1月":378096,"1月_tax":0,"2月":19680,"2月_tax":0,"3月":0,"3月_tax":0,"4月":1800,"4月_tax":0,"5月":7200,"5月_tax":0,"6月":0,"6月_tax":0,"7月":9540,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":5856,"10月_tax":0,"11月":10980,"11月_tax":0,"12月":4830,"12月_tax":0},{"id":"A15090","name":"九龍","1月":21120,"1月_tax":1056,"2月":36300,"2月_tax":1815,"3月":44320,"3月_tax":2216,"4月":20790,"4月_tax":1040,"5月":31680,"5月_tax":1584,"6月":59640,"6月_tax":2982,"7月":63410,"7月_tax":3171,"8月":42430,"8月_tax":2122,"9月":58790,"9月_tax":2940,"10月":48560,"10月_tax":2428,"11月":49080,"11月_tax":2454,"12月":41480,"12月_tax":2074},{"id":"A15101","name":"耐爾吉斯","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":11448,"8月_tax":0,"9月":660,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15102","name":"秦先生","1月":6840,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":7986,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":7644,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":6498,"10月_tax":0,"11月":0,"11月_tax":0,"12月":7182,"12月_tax":0},{"id":"A15113","name":"方盛育","1月":335112,"1月_tax":0,"2月":201528,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":167832,"11月_tax":0,"12月":166728,"12月_tax":0},{"id":"A15114","name":"楊淑貞","1月":12996,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":10500,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":10176,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15118","name":"鄭榮泰","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":2040,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15121","name":"謝小姐","1月":5178,"1月_tax":0,"2月":4678,"2月_tax":0,"3月":0,"3月_tax":0,"4月":1392,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":696,"7月_tax":0,"8月":2546,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":1806,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15125","name":"洺葳","1月":1980,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15129","name":"零售","1月":2980,"1月_tax":0,"2月":900,"2月_tax":0,"3月":280,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":3600,"8月_tax":0,"9月":0,"9月_tax":0,"10月":1500,"10月_tax":0,"11月":600,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15130","name":"元正","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":25272,"12月_tax":0},{"id":"A15132","name":"綺麗-李","1月":36720,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":25080,"5月_tax":0,"6月":14688,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":15900,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":29616,"12月_tax":0},{"id":"A15133","name":"匯勤","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":465429,"8月_tax":23272,"9月":0,"9月_tax":0,"10月":7274064,"10月_tax":363703,"11月":668629,"11月_tax":33432,"12月":0,"12月_tax":0},{"id":"A15134","name":"聯端","1月":0,"1月_tax":0,"2月":144000,"2月_tax":5220,"3月":49800,"3月_tax":2490,"4月":65190,"4月_tax":3260,"5月":121200,"5月_tax":6060,"6月":76800,"6月_tax":3840,"7月":114600,"7月_tax":5730,"8月":54000,"8月_tax":2700,"9月":83400,"9月_tax":4168,"10月":86400,"10月_tax":4316,"11月":28200,"11月_tax":1410,"12月":5400,"12月_tax":270},{"id":"A15134-1","name":"虹岠","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":48000,"4月_tax":2400,"5月":24000,"5月_tax":1185,"6月":83700,"6月_tax":4185,"7月":24000,"7月_tax":1200,"8月":36000,"8月_tax":1650,"9月":18000,"9月_tax":600,"10月":54000,"10月_tax":2700,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15136","name":"優特麗","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":1500,"3月_tax":0,"4月":0,"4月_tax":0,"5月":1008,"5月_tax":0,"6月":1200,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":720,"9月_tax":0,"10月":4440,"10月_tax":0,"11月":12000,"11月_tax":0,"12月":4296,"12月_tax":0},{"id":"A15149","name":"恭赫","1月":99412,"1月_tax":4971,"2月":22000,"2月_tax":1100,"3月":113128,"3月_tax":5656,"4月":94320,"4月_tax":4716,"5月":51120,"5月_tax":2556,"6月":38740,"6月_tax":1937,"7月":58940,"7月_tax":2947,"8月":65240,"8月_tax":3262,"9月":48360,"9月_tax":2418,"10月":83648,"10月_tax":2178,"11月":71360,"11月_tax":2368,"12月":38880,"12月_tax":1944},{"id":"A15152","name":"益祥","1月":0,"1月_tax":0,"2月":6600,"2月_tax":0,"3月":14400,"3月_tax":0,"4月":7525,"4月_tax":0,"5月":48744,"5月_tax":0,"6月":6600,"6月_tax":0,"7月":24744,"7月_tax":0,"8月":16362,"8月_tax":0,"9月":6690,"9月_tax":0,"10月":50752,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15158","name":"宋襄儀","1月":44532,"1月_tax":0,"2月":1920,"2月_tax":0,"3月":2880,"3月_tax":0,"4月":780,"4月_tax":0,"5月":2400,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":390,"10月_tax":0,"11月":26472,"11月_tax":0,"12月":17112,"12月_tax":0},{"id":"A15160","name":"蕭秀珠","1月":2640,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15165","name":"鳳雄","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":7200,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15166","name":"芽比","1月":46950,"1月_tax":2348,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":19800,"5月_tax":990,"6月":103950,"6月_tax":5198,"7月":0,"7月_tax":0,"8月":9900,"8月_tax":495,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":100800,"11月_tax":5040,"12月":50400,"12月_tax":2520},{"id":"A15170","name":"上友","1月":27708,"1月_tax":0,"2月":6600,"2月_tax":0,"3月":5280,"3月_tax":0,"4月":12240,"4月_tax":0,"5月":12708,"5月_tax":0,"6月":6696,"6月_tax":0,"7月":3828,"7月_tax":0,"8月":18360,"8月_tax":0,"9月":13560,"9月_tax":0,"10月":2400,"10月_tax":0,"11月":78204,"11月_tax":0,"12月":28308,"12月_tax":0},{"id":"A15179","name":"冠軍","1月":8250,"1月_tax":0,"2月":5280,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":12480,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":44850,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15184","name":"明星","1月":24480,"1月_tax":1224,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":6120,"6月_tax":306,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15187","name":"鎰懋","1月":7644,"1月_tax":382,"2月":9408,"2月_tax":470,"3月":0,"3月_tax":0,"4月":5880,"4月_tax":294,"5月":7644,"5月_tax":382,"6月":6468,"6月_tax":323,"7月":7056,"7月_tax":353,"8月":5880,"8月_tax":294,"9月":7056,"9月_tax":353,"10月":5880,"10月_tax":294,"11月":7056,"11月_tax":353,"12月":0,"12月_tax":0},{"id":"A15195","name":"詹曉旻","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":11220,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":12312,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15209","name":"飛行者","1月":19200,"1月_tax":0,"2月":19200,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":19960,"12月_tax":0},{"id":"A15220","name":"東蒙","1月":17790,"1月_tax":890,"2月":18080,"2月_tax":904,"3月":67350,"3月_tax":3368,"4月":56630,"4月_tax":2832,"5月":67970,"5月_tax":3399,"6月":90110,"6月_tax":4506,"7月":152050,"7月_tax":7603,"8月":192718,"8月_tax":9636,"9月":104210,"9月_tax":5211,"10月":137750,"10月_tax":6888,"11月":97630,"11月_tax":4882,"12月":81626,"12月_tax":4081},{"id":"A15223","name":"兔子媽媽","1月":14982,"1月_tax":749,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":6836,"4月_tax":342,"5月":9458,"5月_tax":473,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":9512,"8月_tax":476,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":9562,"11月_tax":478,"12月":0,"12月_tax":0},{"id":"A15224","name":"宥展","1月":35760,"1月_tax":1788,"2月":0,"2月_tax":0,"3月":30120,"3月_tax":1506,"4月":18840,"4月_tax":942,"5月":60240,"5月_tax":3012,"6月":0,"6月_tax":0,"7月":11280,"7月_tax":564,"8月":0,"8月_tax":0,"9月":48960,"9月_tax":2448,"10月":65880,"10月_tax":3294,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15225","name":"明霖","1月":0,"1月_tax":0,"2月":47520,"2月_tax":2376,"3月":30840,"3月_tax":1542,"4月":8100,"4月_tax":405,"5月":6000,"5月_tax":300,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15228","name":"龍興","1月":11880,"1月_tax":594,"2月":0,"2月_tax":0,"3月":9240,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":25080,"11月_tax":1254,"12月":35640,"12月_tax":1188},{"id":"A15231","name":"麗佩沛","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":1406294,"4月_tax":70206,"5月":558748,"5月_tax":27938,"6月":1083863,"6月_tax":54111,"7月":5727326,"7月_tax":241574,"8月":209476,"8月_tax":10536,"9月":0,"9月_tax":0,"10月":2949682,"10月_tax":147483,"11月":3440703,"11月_tax":168047,"12月":1340001,"12月_tax":0},{"id":"A15233","name":"薆米克","1月":52416,"1月_tax":2621,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":14352,"11月_tax":718,"12月":29860,"12月_tax":1493},{"id":"A15237","name":"張家瑜","1月":15840,"1月_tax":0,"2月":13950,"2月_tax":0,"3月":10170,"3月_tax":0,"4月":10800,"4月_tax":0,"5月":0,"5月_tax":0,"6月":15210,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15240","name":"名越行","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":0,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":15912,"11月_tax":0,"12月":0,"12月_tax":0},{"id":"A15243","name":"中福內衣","1月":0,"1月_tax":0,"2月":0,"2月_tax":0,"3月":19800,"3月_tax":0,"4月":0,"4月_tax":0,"5月":0,"5月_tax":0,"6月":0,"6月_tax":0,"7月":0,"7月_tax":0,"8月":0,"8月_tax":0,"9月":0,"9月_tax":0,"10月":0,"10月_tax":0,"11月":0,"11月_tax":0,"12月":0,"12月_tax":0}]
+};
+
+// 2026：從 localStorage 載入，初始空
+const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const TAX    = ['稅金','稅金.1','稅金.2','稅金.3','稅金.4','稅金.5','稅金.6','稅金.7','稅金.8','稅金.9','稅金.10','稅金.11'];
+const KEY26  = 'sylvia_ar_2026_v1';
+
+let STATE26  = { customers: [], months: [] };  // 2026年動態資料
+let VIEW     = '2026';
+let CHARTS   = {};
+
+// ── Storage ──
+function saveStorage()  { try { localStorage.setItem(KEY26, JSON.stringify(STATE26)); } catch(e){} }
+function loadStorage()  {
+  try {
+    const r = localStorage.getItem(KEY26);
+    if (!r) return false;
+    const d = JSON.parse(r);
+    if (d && d.customers && d.months && d.months.length) { STATE26 = d; return true; }
+  } catch(e){}
+  return false;
 }
 
-// 2. 處理檔案讀取
+// ── Toast ──
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none', 3000);
+}
+
+// ── Drag & Drop ──
+const dz = document.getElementById('dz');
+dz.addEventListener('dragover', e=>{ e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', ()=>dz.classList.remove('over'));
+dz.addEventListener('drop', e=>{ e.preventDefault(); dz.classList.remove('over'); handleFile(e.dataTransfer.files[0]); });
+
+// ── File Handler ──
 function handleFile(file) {
   if (!file) return;
-  
-  showToast(`已接收檔案：${file.name}，解析中...`);
-  
+  if (typeof XLSX === 'undefined') { alert('讀取模組載入中，請稍候 2 秒再試'); return; }
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = e => {
     try {
-      if (typeof XLSX === 'undefined') {
-        alert('Excel 解析元件還在載入中，請稍等 2 秒再試一次！');
-        return;
-      }
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, {type: 'array'});
-      
-      // 完成解析後的相應處理邏輯
-      showToast('資料載入成功！');
-      document.getElementById('uploadSection').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      document.getElementById('savedBar').style.display = 'flex';
-      document.getElementById('fileInfo').innerText = `已載入：${file.name}`;
-      
-    } catch (err) {
-      alert('檔案解析失敗，請確認是否為標準 Excel (.xlsx / .xls) 格式。');
-      console.error(err);
-    }
+      const wb  = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+      const ws  = wb.Sheets[wb.SheetNames[0]];
+      const raw = XLSX.utils.sheet_to_json(ws, {defval:null});
+      merge2026(raw, file.name);
+    } catch(err) { alert('讀取失敗：' + err.message); }
   };
   reader.readAsArrayBuffer(file);
 }
 
-// 3. 拖曳檔案處理
-const dz = document.getElementById('dz');
-if(dz){
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dz.addEventListener(eventName, preventDefaults, false);
-  });
-  function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+function merge2026(rows, fileName) {
+  if (!rows.length) return;
+  const keys    = Object.keys(rows[0]);
+  const newMons = MONTHS.filter(m => keys.includes(m));
+  const dRows   = rows.filter(r => r['客戶編號'] && r['客戶編號'] !== '合計' && r['客戶']);
 
-  ['dragenter', 'dragover'].forEach(eventName => {
-    dz.addEventListener(eventName, () => dz.classList.add('over'), false);
-  });
-  ['dragleave', 'drop'].forEach(eventName => {
-    dz.addEventListener(eventName, () => dz.classList.remove('over'), false);
+  // 只接受有實際數據的月份
+  const activeMons = newMons.filter(m => dRows.some(r => parseFloat(r[m]) > 0));
+  if (!activeMons.length) { alert('此 Excel 無有效月份資料'); return; }
+
+  const map = new Map();
+  STATE26.customers.forEach(c => map.set(c.id, {...c}));
+
+  dRows.forEach(r => {
+    const id = String(r['客戶編號']||''), name = String(r['客戶']||'');
+    if (!id) return;
+    if (!map.has(id)) map.set(id, {id, name});
+    const obj = map.get(id);
+    newMons.forEach((m,i) => {
+      const v = parseFloat(r[m])||0;
+      const t = parseFloat(r[TAX[MONTHS.indexOf(m)]])||0;
+      if (v > 0) { obj[m] = v; obj[m+'_tax'] = t; }
+    });
   });
 
-  dz.addEventListener('drop', (e) => {
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    if(files.length > 0) handleFile(files[0]);
-  }, false);
+  const allMons = [...new Set([...STATE26.months, ...activeMons])];
+  allMons.sort((a,b) => MONTHS.indexOf(a)-MONTHS.indexOf(b));
+
+  // ⚠️ 嚴格：只保留 2026 有實際資料的月份資料，不允許寫入 0
+  const allC = Array.from(map.values()).filter(c => allMons.some(m => c[m] > 0));
+
+  const added   = activeMons.filter(m => !STATE26.months.includes(m));
+  const updated = activeMons.filter(m =>  STATE26.months.includes(m));
+
+  STATE26 = { customers: allC, months: allMons };
+  saveStorage();
+  updateSavedBar();
+
+  document.getElementById('fileInfo').textContent = '2026年：' + allMons.join('、');
+  let msg = '';
+  if (added.length)   msg += '✅ 新增 '+added.join('、')+' ';
+  if (updated.length) msg += '🔄 更新 '+updated.join('、');
+  if (msg) toast(msg.trim());
+
+  renderAll();
+  document.getElementById('uploadSection').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
 }
 
-// 4. Toast 提示訊息
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.style.display = 'block';
-  setTimeout(() => { t.style.display = 'none'; }, 3000);
+// ── Saved Bar ──
+function updateSavedBar() {
+  const bar = document.getElementById('savedBar');
+  if (!STATE26.months.length) { bar.style.display='none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('mTags').innerHTML = STATE26.months.map(m =>
+    `<span class="m-tag">${m}<span class="m-del" onclick="delMonth('${m}')">×</span></span>`
+  ).join('');
+}
+
+function delMonth(m) {
+  if (!confirm('確定刪除 2026年 '+m+' 的資料？')) return;
+  STATE26.months = STATE26.months.filter(x => x !== m);
+  STATE26.customers = STATE26.customers.map(c => {
+    const nc = {...c}; delete nc[m]; delete nc[m+'_tax']; return nc;
+  }).filter(c => STATE26.months.some(mo => c[mo] > 0));
+  if (!STATE26.months.length) { clearAll(); return; }
+  saveStorage(); updateSavedBar(); renderAll();
+  toast('🗑 已刪除 2026/'+m);
 }
 
 function clearAll() {
-  if(confirm('確定要清除 2026 年上傳的資料嗎？')) {
-    location.reload();
-  }
+  if (!confirm('確定清除所有 2026 年資料？')) return;
+  localStorage.removeItem(KEY26);
+  STATE26 = { customers: [], months: [] };
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('savedBar').style.display = 'none';
+  document.getElementById('uploadSection').style.display = 'flex';
+  document.getElementById('fileInfo').textContent = '2026年：尚未載入';
+  toast('✅ 已清除');
 }
 
-function setView(view) {
-  document.querySelectorAll('.t-btn').forEach(btn => btn.classList.remove('on'));
-  if(event && event.target) event.target.classList.add('on');
+// ── View ──
+function setView(v) {
+  VIEW = v;
+  ['26','25','24','YoY','MoM'].forEach(x => {
+    const btn = document.getElementById('btn'+x);
+    if (btn) btn.classList.toggle('on',
+      (x==='26'&&v==='2026')||(x==='25'&&v==='2025')||(x==='24'&&v==='2024')||
+      (x==='YoY'&&v==='yoy')||(x==='MoM'&&v==='mom')
+    );
+  });
+  renderAll();
 }
+
+// ── Helpers ──
+const C26 = () => STATE26.customers;
+const M26 = () => STATE26.months;
+const C25 = () => DATA[2025];
+const C24 = () => DATA[2024];
+
+function monthTotal(customers, month) {
+  return customers.reduce((s,c) => s+(c[month]||0), 0);
+}
+function find(customers, id) { return customers.find(c=>c.id===id); }
+function fmt(v)  { return v>0 ? '$'+Math.round(v).toLocaleString('zh-TW') : '—'; }
+function fmtK(v) { return v>=1e6?'$'+Math.round(v/1e6*10)/10+'M':v>=1000?'$'+Math.round(v/1000)+'K':'$'+Math.round(v); }
+function fmtPct(a,b) { // (a=新, b=舊) → YoY or MoM %
+  if (!b || b===0) return null;
+  return ((a-b)/b*100).toFixed(1);
+}
+function pctTag(pct) {
+  if (pct===null) return '<span style="color:var(--text3)">N/A</span>';
+  const cls = pct>=0?'p-up':'p-dn';
+  return `<span class="pill ${cls}">${pct>=0?'▲':'▼'}${Math.abs(pct)}%</span>`;
+}
+
+const COLORS = ['#4f9eff','#36d9a0','#f5a623','#d97bff','#ff6b6b','#4ee6e6','#ffd36b','#ff9f4e','#a8ff78','#fe8ebb'];
+
+function destroyChart(k) { if(CHARTS[k]){ CHARTS[k].destroy(); delete CHARTS[k]; } }
+
+// ── Render All ──
+function renderAll() {
+  renderKPIs();
+  renderBarChart();
+  renderLineChart();
+  renderYoYBar();
+  renderMoMBar();
+  renderTableHead();
+  renderTable();
+}
+
+// ── KPIs ──
+function renderKPIs() {
+  const m26 = M26();
+  const c26 = C26(), c25 = C25(), c24 = C24();
+
+  let kpis = [];
+
+  if (VIEW === '2026') {
+    if (!m26.length) return;
+    const latest = m26[m26.length-1];
+    const prev26 = m26.length>1 ? m26[m26.length-2] : null;
+    const latT   = monthTotal(c26, latest);
+    const prevT  = prev26 ? monthTotal(c26, prev26) : null;
+    const latTax = c26.reduce((s,c)=>s+(c[latest+'_tax']||0),0);
+    const latCnt = c26.filter(c=>c[latest]>0).length;
+    const totAll = m26.reduce((s,m)=>s+monthTotal(c26,m),0);
+
+    // YoY vs 2025 同月
+    const y25 = monthTotal(c25, latest);
+    const yoy = fmtPct(latT, y25);
+    // MoM
+    const mom = prevT!==null ? fmtPct(latT, prevT) : null;
+
+    kpis = [
+      {lbl:`${latest} 應收合計`, val:'$'+latT.toLocaleString('zh-TW'),
+        sub:`稅金 ${latTax.toLocaleString('zh-TW')}　${latCnt}家客戶`, c1:'#4f9eff',c2:'#36d9a0',
+        badge:yoy!==null?{v:yoy,label:'YoY'}:null},
+      {lbl:'MoM 月增率', val:mom!==null?(mom>=0?'+':'')+mom+'%':'—',
+        sub:prev26?`${prev26} → ${latest}`:'無上月資料', c1:mom>=0?'#36d9a0':'#ff5f57',c2:'#4f9eff',
+        badge:null},
+      {lbl:'YoY 年增率', val:yoy!==null?(yoy>=0?'+':'')+yoy+'%':'—',
+        sub:`vs 2025/${latest} ${fmt(y25)}`, c1:yoy>=0?'#36d9a0':'#ff5f57',c2:'#d97bff',
+        badge:null},
+      {lbl:`${m26[0]}～${latest} 累計`, val:'$'+totAll.toLocaleString('zh-TW'),
+        sub:m26.length+'個月合計', c1:'#f5a623',c2:'#d97bff', badge:null},
+      {lbl:'有資料客戶數', val:String(latCnt),
+        sub:'共'+c26.length+'家', c1:'#d97bff',c2:'#fe8ebb', badge:null}
+    ];
+
+  } else if (VIEW === '2025') {
+    const tot25 = MONTHS.reduce((s,m)=>s+monthTotal(c25,m),0);
+    const tot24 = MONTHS.reduce((s,m)=>s+monthTotal(c24,m),0);
+    const yoy   = fmtPct(tot25, tot24);
+    const maxM  = MONTHS.reduce((best,m)=>monthTotal(c25,m)>monthTotal(c25,best)?m:best,'1月');
+    kpis = [
+      {lbl:'2025全年合計', val:'$'+tot25.toLocaleString('zh-TW'), sub:'vs 2024: '+(yoy>=0?'+':'')+yoy+'%', c1:'#4f9eff',c2:'#36d9a0', badge:{v:yoy,label:'YoY'}},
+      {lbl:'2024全年合計', val:'$'+tot24.toLocaleString('zh-TW'), sub:'基準年', c1:'#8892a4',c2:'#4d5568', badge:null},
+      {lbl:'最高月份', val:maxM, sub:'$'+monthTotal(c25,maxM).toLocaleString('zh-TW'), c1:'#f5a623',c2:'#d97bff', badge:null},
+      {lbl:'月平均', val:'$'+Math.round(tot25/12).toLocaleString('zh-TW'), sub:'全年平均', c1:'#d97bff',c2:'#fe8ebb', badge:null},
+      {lbl:'有資料客戶', val:String(c25.filter(c=>MONTHS.some(m=>c[m]>0)).length), sub:'2025全年', c1:'#36d9a0',c2:'#4f9eff', badge:null}
+    ];
+
+  } else if (VIEW === '2024') {
+    const tot24 = MONTHS.reduce((s,m)=>s+monthTotal(c24,m),0);
+    const maxM  = MONTHS.reduce((best,m)=>monthTotal(c24,m)>monthTotal(c24,best)?m:best,'1月');
+    kpis = [
+      {lbl:'2024全年合計', val:'$'+tot24.toLocaleString('zh-TW'), sub:'全年12個月', c1:'#8892a4',c2:'#4d5568', badge:null},
+      {lbl:'最高月份', val:maxM, sub:'$'+monthTotal(c24,maxM).toLocaleString('zh-TW'), c1:'#f5a623',c2:'#d97bff', badge:null},
+      {lbl:'月平均', val:'$'+Math.round(tot24/12).toLocaleString('zh-TW'), sub:'全年平均', c1:'#d97bff',c2:'#fe8ebb', badge:null},
+      {lbl:'最低月份', val:MONTHS.reduce((b,m)=>monthTotal(c24,m)<monthTotal(c24,b)?m:b,'1月'),
+        sub:'', c1:'#4f9eff',c2:'#36d9a0', badge:null},
+      {lbl:'有資料客戶', val:String(c24.filter(c=>MONTHS.some(m=>c[m]>0)).length), sub:'2024全年', c1:'#36d9a0',c2:'#4f9eff', badge:null}
+    ];
+
+  } else if (VIEW === 'yoy') {
+    if (!m26.length) return;
+    const sharedMons = m26.filter(m=>MONTHS.includes(m));
+    const t26 = sharedMons.reduce((s,m)=>s+monthTotal(c26,m),0);
+    const t25 = sharedMons.reduce((s,m)=>s+monthTotal(c25,m),0);
+    const t24 = sharedMons.reduce((s,m)=>s+monthTotal(c24,m),0);
+    const yoy2625 = fmtPct(t26,t25);
+    const yoy2524 = fmtPct(t25,t24);
+    kpis = [
+      {lbl:'2026 同期合計', val:'$'+t26.toLocaleString('zh-TW'), sub:sharedMons.join('、'), c1:'#4f9eff',c2:'#36d9a0', badge:{v:yoy2625,label:'vs2025'}},
+      {lbl:'2025 同期合計', val:'$'+t25.toLocaleString('zh-TW'), sub:sharedMons.join('、'), c1:'#8892a4',c2:'#4d5568', badge:{v:yoy2524,label:'vs2024'}},
+      {lbl:'2024 同期合計', val:'$'+t24.toLocaleString('zh-TW'), sub:sharedMons.join('、'), c1:'#4d5568',c2:'#8892a4', badge:null},
+      {lbl:'YoY 2026 vs 2025', val:(yoy2625>=0?'+':'')+yoy2625+'%',
+        sub:sharedMons.length+'個月同期', c1:yoy2625>=0?'#36d9a0':'#ff5f57',c2:'#4f9eff', badge:null},
+      {lbl:'YoY 2025 vs 2024', val:(yoy2524>=0?'+':'')+yoy2524+'%',
+        sub:sharedMons.length+'個月同期', c1:yoy2524>=0?'#36d9a0':'#ff5f57',c2:'#f5a623', badge:null}
+    ];
+
+  } else { // mom
+    if (!m26.length) return;
+    const latest  = m26[m26.length-1];
+    const prev26  = m26.length>1?m26[m26.length-2]:null;
+    const latT    = monthTotal(c26,latest);
+    const prevT   = prev26?monthTotal(c26,prev26):null;
+    const mom     = prevT!==null?fmtPct(latT,prevT):null;
+    // Rolling: prev month YoY
+    const y25late = monthTotal(c25,latest);
+    const y25prev = prev26?monthTotal(c25,prev26):null;
+    const momY25  = y25prev!==null?fmtPct(y25late,y25prev):null;
+    kpis = [
+      {lbl:`${latest} 本月`, val:'$'+latT.toLocaleString('zh-TW'), sub:'2026年當月', c1:'#4f9eff',c2:'#36d9a0', badge:mom!==null?{v:mom,label:'MoM'}:null},
+      {lbl:'MoM 月增率', val:mom!==null?(mom>=0?'+':'')+mom+'%':'—',
+        sub:prev26?`vs ${prev26}`:'無上月', c1:mom>=0?'#36d9a0':'#ff5f57',c2:'#4f9eff', badge:null},
+      {lbl:`${prev26||'—'} 上月`, val:prevT!==null?'$'+prevT.toLocaleString('zh-TW'):'—', sub:'2026年上月', c1:'#8892a4',c2:'#4d5568', badge:null},
+      {lbl:`2025/${latest} 同月`, val:'$'+y25late.toLocaleString('zh-TW'), sub:`YoY: ${fmtPct(latT,y25late)!==null?(fmtPct(latT,y25late)>=0?'+':'')+fmtPct(latT,y25late)+'%':'N/A'}`, c1:'#f5a623',c2:'#d97bff', badge:null},
+      {lbl:'MoM 2025參考', val:momY25!==null?(momY25>=0?'+':'')+momY25+'%':'—', sub:'2025同期月增率', c1:'#d97bff',c2:'#fe8ebb', badge:null}
+    ];
+  }
+
+  document.getElementById('kpiRow').innerHTML = kpis.map(k=>`
+    <div class="kpi" style="--c1:${k.c1};--c2:${k.c2}">
+      <div class="kpi-lbl">${k.lbl}</div>
+      <div class="kpi-val">${k.val}</div>
+      <div class="kpi-sub">${k.sub}</div>
+      ${k.badge?`<div class="kpi-badge ${k.badge.v>=0?'b-up':'b-dn'}">${k.badge.label} ${k.badge.v>=0?'▲':'▼'}${Math.abs(k.badge.v)}%</div>`:''}
+    </div>`).join('');
+}
+
+// ── Bar Chart ──
+function renderBarChart() {
+  if (typeof Chart==='undefined') return;
+  const m26=M26(), c26=C26(), c25=C25(), c24=C24();
+  let labels, datasets;
+
+  if (VIEW==='2026') {
+    if (!m26.length) return;
+    const latest = m26[m26.length-1];
+    const show   = m26.slice(-3);
+    const top10  = [...c26].sort((a,b)=>(b[latest]||0)-(a[latest]||0)).slice(0,10);
+    labels   = top10.map(c=>c.name);
+    datasets = show.map((m,i)=>({label:m,data:top10.map(c=>c[m]||0),backgroundColor:COLORS[i]+'cc',borderRadius:4,borderSkipped:false}));
+    document.getElementById('barTitle').textContent='前10大客戶（2026）';
+    document.getElementById('barSub').textContent='依'+latest+'排序';
+    document.getElementById('barLeg').innerHTML=show.map((m,i)=>`<div class="leg"><div class="leg-dot" style="background:${COLORS[i]}"></div>${m}</div>`).join('');
+  } else if (VIEW==='2025') {
+    const tot = c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0);
+    const top10 = [...c25].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
+    labels   = top10.map(c=>c.name);
+    datasets = [{label:'2025全年',data:top10.map(c=>tot(c)),backgroundColor:'#8892a4cc',borderRadius:4,borderSkipped:false}];
+    document.getElementById('barTitle').textContent='前10大客戶（2025全年）';
+    document.getElementById('barSub').textContent='依全年合計排序';
+    document.getElementById('barLeg').innerHTML='';
+  } else if (VIEW==='2024') {
+    const tot = c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0);
+    const top10 = [...c24].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
+    labels   = top10.map(c=>c.name);
+    datasets = [{label:'2024全年',data:top10.map(c=>tot(c)),backgroundColor:'#4d5568cc',borderRadius:4,borderSkipped:false}];
+    document.getElementById('barTitle').textContent='前10大客戶（2024全年）';
+    document.getElementById('barSub').textContent='依全年合計排序';
+    document.getElementById('barLeg').innerHTML='';
+  } else if (VIEW==='yoy') {
+    if (!m26.length) return;
+    const shared = m26.filter(m=>MONTHS.includes(m));
+    const get26 = c => shared.reduce((s,m)=>s+(c[m]||0),0);
+    const get25 = id => { const c=find(c25,id); return c?shared.reduce((s,m)=>s+(c[m]||0),0):0; };
+    const get24 = id => { const c=find(c24,id); return c?shared.reduce((s,m)=>s+(c[m]||0),0):0; };
+    const top10 = [...c26].sort((a,b)=>get26(b)-get26(a)).slice(0,10);
+    labels   = top10.map(c=>c.name);
+    datasets = [
+      {label:'2026',data:top10.map(c=>get26(c)),backgroundColor:'#4f9effcc',borderRadius:4,borderSkipped:false},
+      {label:'2025',data:top10.map(c=>get25(c.id)),backgroundColor:'#8892a488',borderRadius:4,borderSkipped:false},
+      {label:'2024',data:top10.map(c=>get24(c.id)),backgroundColor:'#4d556888',borderRadius:4,borderSkipped:false}
+    ];
+    document.getElementById('barTitle').textContent='前10大客戶 YoY 同期比';
+    document.getElementById('barSub').textContent=shared.join('、');
+    document.getElementById('barLeg').innerHTML=`<div class="leg"><div class="leg-dot" style="background:#4f9eff"></div>2026</div><div class="leg"><div class="leg-dot" style="background:#8892a4"></div>2025</div><div class="leg"><div class="leg-dot" style="background:#4d5568"></div>2024</div>`;
+  } else { // mom
+    if (!m26.length) return;
+    const latest = m26[m26.length-1];
+    const prev   = m26.length>1?m26[m26.length-2]:null;
+    const top10  = [...c26].sort((a,b)=>(b[latest]||0)-(a[latest]||0)).slice(0,10);
+    labels   = top10.map(c=>c.name);
+    datasets = [
+      {label:latest,data:top10.map(c=>c[latest]||0),backgroundColor:'#4f9effcc',borderRadius:4,borderSkipped:false},
+      ...(prev?[{label:prev,data:top10.map(c=>c[prev]||0),backgroundColor:'#8892a488',borderRadius:4,borderSkipped:false}]:[])
+    ];
+    document.getElementById('barTitle').textContent='前10大客戶 MoM';
+    document.getElementById('barSub').textContent=(prev?prev+' vs ':'')+latest;
+    document.getElementById('barLeg').innerHTML=datasets.map((d,i)=>`<div class="leg"><div class="leg-dot" style="background:${i===0?'#4f9eff':'#8892a4'}"></div>${d.label}</div>`).join('');
+  }
+
+  destroyChart('bar');
+  CHARTS.bar = new Chart(document.getElementById('barC'), {
+    type:'bar', data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'#8892a4',font:{size:11},maxRotation:30},grid:{display:false},border:{color:'rgba(255,255,255,0.07)'}},
+        y:{ticks:{color:'#8892a4',font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,0.05)'},border:{display:false}}
+      }
+    }
+  });
+}
+
+// ── Line Chart ──
+function renderLineChart() {
+  if (typeof Chart==='undefined') return;
+  const m26=M26(), c26=C26(), c25=C25(), c24=C24();
+  let lLabels, lData;
+
+  const lineOpts = (color,fill=false) => ({borderColor:color,backgroundColor:color.replace(')',',0.08)').replace('rgb','rgba'),fill,tension:0.35,pointRadius:5,pointBackgroundColor:color,pointBorderColor:'#0f1117',pointBorderWidth:2});
+
+  if (VIEW==='2026') {
+    if (!m26.length) return;
+    lLabels = m26;
+    lData   = [{label:'2026',...lineOpts('#4f9eff',true),data:m26.map(m=>monthTotal(c26,m))}];
+    document.getElementById('lineSub').textContent='2026各月應收合計';
+    document.getElementById('lineLeg').innerHTML='';
+  } else if (VIEW==='2025') {
+    lLabels = MONTHS;
+    lData   = [{label:'2025',...lineOpts('#8892a4',true),data:MONTHS.map(m=>monthTotal(c25,m))}];
+    document.getElementById('lineSub').textContent='2025全年各月趨勢';
+    document.getElementById('lineLeg').innerHTML='';
+  } else if (VIEW==='2024') {
+    lLabels = MONTHS;
+    lData   = [{label:'2024',...lineOpts('#4d5568',true),data:MONTHS.map(m=>monthTotal(c24,m))}];
+    document.getElementById('lineSub').textContent='2024全年各月趨勢';
+    document.getElementById('lineLeg').innerHTML='';
+  } else if (VIEW==='yoy') {
+    if (!m26.length) return;
+    const shared = m26.filter(m=>MONTHS.includes(m));
+    lLabels = shared;
+    lData   = [
+      {label:'2026',...lineOpts('#4f9eff'),data:shared.map(m=>monthTotal(c26,m))},
+      {label:'2025',...lineOpts('#8892a4'),data:shared.map(m=>monthTotal(c25,m))},
+      {label:'2024',...lineOpts('#4d5568'),data:shared.map(m=>monthTotal(c24,m))}
+    ];
+    document.getElementById('lineSub').textContent='三年同期趨勢比較';
+    document.getElementById('lineLeg').innerHTML=`<div class="leg"><div class="leg-dot" style="background:#4f9eff"></div>2026</div><div class="leg"><div class="leg-dot" style="background:#8892a4"></div>2025</div><div class="leg"><div class="leg-dot" style="background:#4d5568"></div>2024</div>`;
+  } else { // mom
+    if (!m26.length) return;
+    lLabels = m26;
+    lData   = [
+      {label:'2026',...lineOpts('#4f9eff'),data:m26.map(m=>monthTotal(c26,m))},
+      {label:'2025同期',...lineOpts('#8892a4'),data:m26.map(m=>monthTotal(c25,m))}
+    ];
+    document.getElementById('lineSub').textContent='MoM 月度走勢';
+    document.getElementById('lineLeg').innerHTML=`<div class="leg"><div class="leg-dot" style="background:#4f9eff"></div>2026</div><div class="leg"><div class="leg-dot" style="background:#8892a4"></div>2025</div>`;
+  }
+
+  destroyChart('line');
+  CHARTS.line = new Chart(document.getElementById('lineC'), {
+    type:'line', data:{labels:lLabels,datasets:lData},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:lData.length>1,labels:{color:'#8892a4',font:{size:11}}},tooltip:{callbacks:{label:ctx=>' $'+ctx.raw.toLocaleString('zh-TW')}}},
+      scales:{
+        x:{ticks:{color:'#8892a4',font:{size:12}},grid:{display:false},border:{color:'rgba(255,255,255,0.07)'}},
+        y:{ticks:{color:'#8892a4',font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:'rgba(255,255,255,0.05)'},border:{display:false}}
+      }
+    }
+  });
+}
+
+// ── YoY Bar (bottom left) ──
+function renderYoYBar() {
+  if (typeof Chart==='undefined') return;
+  const m26=M26(), c26=C26(), c25=C25(), c24=C24();
+  if (!m26.length) { destroyChart('yoyBar'); return; }
+
+  const shared = m26.filter(m=>MONTHS.includes(m));
+  // YoY per customer: (2026 sum vs 2025 sum for shared months)
+  const yoyData = c26.map(c => {
+    const v26 = shared.reduce((s,m)=>s+(c[m]||0),0);
+    const c25c = find(c25, c.id);
+    const v25  = c25c ? shared.reduce((s,m)=>s+(c25c[m]||0),0) : 0;
+    const pct  = v25>0 ? ((v26-v25)/v25*100) : null;
+    return {name:c.name, pct, v26, v25};
+  }).filter(d=>d.pct!==null).sort((a,b)=>b.v26-a.v26).slice(0,10);
+
+  document.getElementById('yoyBarTitle').textContent = 'YoY 年增率（2026 vs 2025）';
+  document.getElementById('yoyBarSub').textContent   = shared.join('、')+' 同期';
+
+  destroyChart('yoyBar');
+  CHARTS.yoyBar = new Chart(document.getElementById('yoyBarC'), {
+    type:'bar',
+    data:{
+      labels: yoyData.map(d=>d.name),
+      datasets:[{ label:'YoY%', data:yoyData.map(d=>parseFloat(d.pct.toFixed(1))),
+        backgroundColor: yoyData.map(d=>d.pct>=0?'rgba(54,217,160,0.7)':'rgba(255,95,87,0.7)'),
+        borderRadius:4, borderSkipped:false }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},
+      scales:{
+        x:{ticks:{color:'#8892a4',font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},
+        y:{ticks:{color:'#8892a4',font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},border:{display:false}}
+      }
+    }
+  });
+}
+
+// ── MoM Bar (bottom right) ──
+function renderMoMBar() {
+  if (typeof Chart==='undefined') return;
+  const m26=M26(), c26=C26(), c25=C25();
+  if (m26.length < 2) { destroyChart('momBar'); return; }
+
+  const latest = m26[m26.length-1];
+  const prev   = m26[m26.length-2];
+
+  const momData = c26.map(c => {
+    const vL = c[latest]||0;
+    const vP = c[prev]||0;
+    const pct = vP>0 ? ((vL-vP)/vP*100) : null;
+    return {name:c.name, pct, vL};
+  }).filter(d=>d.pct!==null).sort((a,b)=>b.vL-a.vL).slice(0,10);
+
+  document.getElementById('momBarTitle').textContent = `MoM 月增率（${prev} → ${latest}）`;
+  document.getElementById('momBarSub').textContent   = '2026年';
+
+  destroyChart('momBar');
+  CHARTS.momBar = new Chart(document.getElementById('momBarC'), {
+    type:'bar',
+    data:{
+      labels: momData.map(d=>d.name),
+      datasets:[{ label:'MoM%', data:momData.map(d=>parseFloat(d.pct.toFixed(1))),
+        backgroundColor: momData.map(d=>d.pct>=0?'rgba(79,158,255,0.7)':'rgba(255,95,87,0.7)'),
+        borderRadius:4, borderSkipped:false }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},
+      scales:{
+        x:{ticks:{color:'#8892a4',font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},
+        y:{ticks:{color:'#8892a4',font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,0.05)'},border:{display:false}}
+      }
+    }
+  });
+}
+
+// ── Table Head ──
+function renderTableHead() {
+  const m26=M26(), c25=C25(), c24=C24();
+  if (!m26.length) return;
+  const latest = m26[m26.length-1];
+  const prev   = m26.length>1?m26[m26.length-2]:null;
+  document.getElementById('tHead').innerHTML = `<tr>
+    <th>編號</th><th>客戶</th>
+    ${prev?`<th class="r">${prev}</th>`:''}
+    <th class="r">${latest}</th>
+    <th class="r">稅金(${latest})</th>
+    <th class="r">MoM</th>
+    <th class="r">YoY vs 2025</th>
+    <th class="r">YoY vs 2024</th>
+    <th class="r">累計</th>
+    <th>趨勢</th>
+  </tr>`;
+}
+
+// ── Table Body ──
+function renderTable() {
+  const m26=M26(), c26=C26(), c25=C25(), c24=C24();
+  if (!m26.length) return;
+  const latest = m26[m26.length-1];
+  const prev   = m26.length>1?m26[m26.length-2]:null;
+
+  const q    = document.getElementById('srch').value.trim().toLowerCase();
+  const sort = document.getElementById('tSort').value;
+  const filt = document.getElementById('tFilter').value;
+
+  let data = c26.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.id.toLowerCase().includes(q)) return false;
+    if (filt==='active')  return c[latest]>0;
+    if (filt==='new')     return c[latest]>0&&(!prev||!c[prev]);
+    if (filt==='miss')    return !c[latest]&&m26.some(m=>m!==latest&&c[m]>0);
+    return true;
+  });
+
+  const total  = c => m26.reduce((s,m)=>s+(c[m]||0),0);
+  const yoy25  = c => { const x=find(c25,c.id); return x?fmtPct(c[latest]||0,x[latest]||0):null; };
+  const yoy24  = c => { const x=find(c24,c.id); return x?fmtPct(c[latest]||0,x[latest]||0):null; };
+  const mom    = c => prev?fmtPct(c[latest]||0,c[prev]||0):null;
+
+  if (sort==='latest') data.sort((a,b)=>(b[latest]||0)-(a[latest]||0));
+  else if(sort==='total') data.sort((a,b)=>total(b)-total(a));
+  else if(sort==='yoy')   data.sort((a,b)=>{const ya=parseFloat(yoy25(a))||0,yb=parseFloat(yoy25(b))||0;return yb-ya;});
+  else data.sort((a,b)=>a.name.localeCompare(b.name,'zh-TW'));
+
+  function badge(c) {
+    if(!prev) return '';
+    if(c[latest]>0&&!c[prev]) return '<span class="pill p-new">新增</span>';
+    if(!c[latest]&&c[prev]>0) return '<span class="pill p-na">本月無</span>';
+    if(c[latest]>0&&c[prev]>0){
+      const p=((c[latest]-c[prev])/c[prev]*100).toFixed(0);
+      return c[latest]>=c[prev]?`<span class="pill p-up">▲${p}%</span>`:`<span class="pill p-dn">▼${Math.abs(p)}%</span>`;
+    }
+    return '';
+  }
+
+  document.getElementById('tBody').innerHTML = data.map(c=>{
+    const y25 = yoy25(c), y24 = yoy24(c), mo = mom(c);
+    return `<tr>
+      <td class="dim">${c.id}</td>
+      <td style="font-weight:500">${c.name}</td>
+      ${prev?`<td class="r" style="color:var(--text2)">${fmt(c[prev]||0)}</td>`:''}
+      <td class="r">${fmt(c[latest]||0)}</td>
+      <td class="r dim">${fmt(c[latest+'_tax']||0)}</td>
+      <td class="r">${pctTag(mo)}</td>
+      <td class="r">${pctTag(y25)}</td>
+      <td class="r">${pctTag(y24)}</td>
+      <td class="r" style="font-weight:500">${fmt(total(c))}</td>
+      <td>${badge(c)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('tFoot').textContent = `顯示 ${data.length} 筆 / 共 ${c26.length} 筆`;
+}
+
+// ── Auto-load ──
+window.addEventListener('load', () => {
+  const ok = loadStorage();
+  if (ok) {
+    document.getElementById('fileInfo').textContent = '2026年：'+STATE26.months.join('、');
+    updateSavedBar();
+    renderAll();
+    document.getElementById('uploadSection').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  }
+});
 </script>
 </body>
 </html>
