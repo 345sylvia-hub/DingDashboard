@@ -43,7 +43,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14px;min-height:100vh}
 
-/* Header：深靛藍滿版 */
 header{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--primary);color:#FFFFFF;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .logo{display:flex;align-items:center;gap:12px}
 .logo-mark{width:36px;height:36px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;font-family:var(--font-header)}
@@ -52,10 +51,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .hdr-right{display:flex;align-items:center;gap:12px}
 #fileInfo{font-size:12px;color:rgba(255,255,255,0.8);font-family:var(--font-mono)}
 
-/* Toast */
 #toast{display:none;position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--pos);color:#FFFFFF;padding:10px 24px;border-radius:30px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 12px rgba(0,196,140,0.3)}
 
-/* Upload */
 #uploadSection{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 70px);padding:40px}
 .drop-zone{width:100%;max-width:520px;border:2px dashed var(--border);border-radius:20px;padding:56px 40px;text-align:center;cursor:pointer;transition:all .25s;background:var(--surface);box-shadow:var(--shadow)}
 .drop-zone:hover,.drop-zone.over{border-color:var(--accent);background:var(--accent-light);transform:translateY(-2px)}
@@ -67,7 +64,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .drop-hint{margin-top:14px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
 .data-status{margin-top:24px;padding:16px 24px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--text2);max-width:520px;width:100%;line-height:1.8;box-shadow:var(--shadow)}
 
-/* SavedBar */
 #savedBar{display:none;padding:10px 32px;background:var(--surface);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap}
 .m-tag{display:inline-flex;align-items:center;gap:4px;background:#FFF;border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-family:var(--font-mono);color:var(--primary)}
 .m-del{cursor:pointer;color:var(--text3);margin-left:4px}
@@ -75,10 +71,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .btn-clear{margin-left:auto;padding:4px 12px;border-radius:6px;border:1px solid var(--neg);background:transparent;color:var(--neg);font-size:11px;font-weight:500;cursor:pointer;transition:all .2s}
 .btn-clear:hover{background:var(--neg);color:#fff}
 
-/* Dashboard */
 #dashboard{display:none;padding:28px 32px 48px}
 
-/* View bar */
 .view-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
 .view-title{font-size:22px;font-weight:700;margin-right:auto;letter-spacing:-.01em;color:var(--primary);font-family:var(--font-header)}
 .view-title span{color:var(--accent)}
@@ -86,7 +80,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .t-btn{padding:6px 16px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:var(--font-sans);border-radius:6px;transition:all .15s}
 .t-btn.on{background:var(--primary);color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
 
-/* KPI 卡片頂部漸層條 */
 .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--accent), var(--pos))}
@@ -97,7 +90,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .b-up{background:var(--pos-light);color:var(--pos)}
 .b-dn{background:var(--neg-light);color:var(--neg)}
 
-/* Charts */
 .chart-row{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:24px}
 .chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
@@ -109,7 +101,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .leg-dot{width:8px;height:8px;border-radius:50%}
 .chart-wrap{position:relative}
 
-/* Table */
 .tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .tbl-bar{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#FFF}
 .tbl-title{font-size:15px;font-weight:700;color:var(--primary);margin-right:auto;font-family:var(--font-header)}
@@ -250,14 +241,13 @@ tbody tr:last-child td{border-bottom:none}
 </div>
 
 <script>
-// 5色明亮暖色系 (深靛藍, 珊瑚橘, 金黃, 薄荷, 檸檬黃)
 const COLOR_PALETTE = ['#1E2D5A', '#FF6B47', '#FFC857', '#00C48C', '#F4E04D'];
 
+// 完全採用您原始檔的資料容器架構
 let rawData = { '2024': {}, '2025': {}, '2026': {} };
 let currentView = '2026';
 let barChart = null, lineChart = null, yoyBarChart = null, momBarChart = null;
 
-// 拖拽與上傳處理
 const dz = document.getElementById('dz');
 dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('over'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('over'));
@@ -341,7 +331,7 @@ function handleFile(file) {
         toast('成功匯入 2026 年：' + addedMonths.join(', '));
         showDashboard();
       } else {
-        alert('無法解析 Excel 內容，請確認工作表名稱包含月份（如：1月, 2026-02）且包含客戶與金額欄位。');
+        alert('無法解析 Excel 內容，請確認工作表名稱包含月份（如：1月, 2026-02）。');
       }
     } catch (err) {
       console.error(err);
@@ -444,7 +434,6 @@ function renderDashboard() {
   const m25 = getLatestMonth('2025') || 12;
   const m24 = getLatestMonth('2024') || 12;
 
-  // Title
   let titleStr = '應收帳款分析 - ';
   if (currentView === '2026') titleStr += `2026年 (截至 ${m26} 月)`;
   else if (currentView === '2025') titleStr += '2025 全年度';
@@ -453,20 +442,15 @@ function renderDashboard() {
   else if (currentView === 'mom') titleStr += 'MoM 月增率 (2026)';
   document.getElementById('vTitle').innerText = titleStr;
 
-  // KPIs
   renderKPIs(m26, m25);
-
-  // Charts
   renderCharts(m26, clients);
-
-  // Table
   renderTable();
 }
 
 function renderKPIs(m26, m25) {
   const kpiRow = document.getElementById('kpiRow');
   
-  let tot26 = 0, tot25_same = 0, tot25_full = 0, prevM_tot = 0;
+  let tot26 = 0, tot25_same = 0, tot25_full = 0;
   const currMObj = rawData['2026'][m26] || {};
   const prevMObj = rawData['2026'][m26 - 1] || {};
   const sameM25Obj = rawData['2025'][m26] || {};
@@ -520,7 +504,6 @@ function renderKPIs(m26, m25) {
 }
 
 function renderCharts(m26, clients) {
-  // Chart 1: Bar Chart (Top 10 Clients)
   let yearTarget = currentView === 'yoy' || currentView === 'mom' ? '2026' : currentView;
   let clientSum = {};
 
@@ -560,7 +543,6 @@ function renderCharts(m26, clients) {
     }
   });
 
-  // Chart 2: Line Chart (Trend)
   const months = [1,2,3,4,5,6,7,8,9,10,11,12];
   const line26 = months.map(m => Object.values(rawData['2026'][m] || {}).reduce((a,b)=>a+b, 0) || null);
   const line25 = months.map(m => Object.values(rawData['2025'][m] || {}).reduce((a,b)=>a+b, 0) || null);
@@ -588,7 +570,6 @@ function renderCharts(m26, clients) {
     }
   });
 
-  // Chart 3: YoY Bar
   const yoyList = sortedTop10.map(c => {
     let v26 = 0, v25 = 0;
     for (let i = 1; i <= m26; i++) {
@@ -621,7 +602,6 @@ function renderCharts(m26, clients) {
     }
   });
 
-  // Chart 4: MoM Bar
   const momList = sortedTop10.map(c => {
     let curr = (rawData['2026'][m26] || {})[c] || 0;
     let prev = (rawData['2026'][m26 - 1] || {})[c] || 0;
@@ -676,21 +656,17 @@ function renderTable() {
     return { name: c, v26_curr, v26_prev, tot26, tot25_same, yoy, mom };
   });
 
-  // Search Filter
   if (srch) rows = rows.filter(r => r.name.toLowerCase().includes(srch));
 
-  // Category Filter
   if (filterOpt === 'active') rows = rows.filter(r => r.v26_curr > 0);
   if (filterOpt === 'new') rows = rows.filter(r => r.v26_curr > 0 && r.tot25_same === 0);
   if (filterOpt === 'miss') rows = rows.filter(r => r.v26_curr === 0 && r.tot25_same > 0);
 
-  // Sorting
   if (sortOpt === 'latest') rows.sort((a,b) => b.v26_curr - a.v26_curr);
   if (sortOpt === 'total') rows.sort((a,b) => b.tot26 - a.tot26);
   if (sortOpt === 'yoy') rows.sort((a,b) => (b.yoy || -999) - (a.yoy || -999));
   if (sortOpt === 'name') rows.sort((a,b) => a.name.localeCompare(b.name));
 
-  // Render Header
   document.getElementById('tHead').innerHTML = `
     <tr>
       <th>客戶名稱</th>
@@ -703,7 +679,6 @@ function renderTable() {
     </tr>
   `;
 
-  // Render Body
   document.getElementById('tBody').innerHTML = rows.map(r => `
     <tr>
       <td style="font-weight:600;color:var(--primary)">${r.name}</td>
@@ -719,19 +694,8 @@ function renderTable() {
   document.getElementById('tFoot').innerText = `共顯示 ${rows.length} 筆客戶資料`;
 }
 
-// 初始化
+// 頁面初始化：只載入真正的 2026 暫存數據，絕不產生任何假的 2024/2025 數據
 window.addEventListener('DOMContentLoaded', () => {
-  // 假資料 (2024, 2025 預設測試數據)
-  const dummyClients = ['客戶A', '客戶B', '客戶C', '客戶D', '客戶E'];
-  for (let m = 1; m <= 12; m++) {
-    rawData['2024'][m] = {};
-    rawData['2025'][m] = {};
-    dummyClients.forEach((c, idx) => {
-      rawData['2024'][m][c] = (idx + 1) * 100000 + Math.random() * 20000;
-      rawData['2025'][m][c] = (idx + 1) * 120000 + Math.random() * 30000;
-    });
-  }
-
   const hasData = loadLocal2026();
   updateSavedBar();
 
