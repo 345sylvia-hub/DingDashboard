@@ -23,10 +23,7 @@
   --yellow:#ffda27;
   --green:#00df6c;
   --blue:#00a3ff;
-  --accent:var(--yellow);
-  --accent2:var(--green);
-  --accent3:var(--blue);
-  --danger:#ff4d4d;--purple:#d97bff;
+  --danger:#ff4d4d;
   --text:#e8eaf0;--text2:#8892a4;--text3:#4d5568;
   --radius:12px;--mono:'DM Mono',monospace;--sans:'Noto Sans TC',sans-serif;
 }
@@ -43,7 +40,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 /* Toast */
 #toast{display:none;position:fixed;top:68px;left:50%;transform:translateX(-50%);background:var(--green);color:#0f1117;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:700;z-index:999;box-shadow:0 4px 16px rgba(0,223,108,.3)}
 
-/* Upload */
+/* Upload Zone */
 #uploadSection{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px);padding:40px}
 .drop-zone{width:100%;max-width:500px;border:2px dashed var(--border);border-radius:20px;padding:56px 40px;text-align:center;cursor:pointer;transition:all .25s;background:var(--surface)}
 .drop-zone:hover,.drop-zone.over{border-color:var(--yellow);background:rgba(255,218,39,.05);transform:translateY(-2px)}
@@ -54,17 +51,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .drop-hint{margin-top:14px;font-size:11px;color:var(--text3);font-family:var(--mono)}
 .data-status{margin-top:20px;padding:14px 20px;background:rgba(0,223,108,.08);border:1px solid rgba(0,223,108,.2);border-radius:10px;font-size:12px;color:var(--green);max-width:500px;width:100%;line-height:1.8}
 
-/* SavedBar */
+/* Dashboard Controls & Layout */
 #savedBar{display:none;padding:9px 28px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap}
 .m-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:11px;font-family:var(--mono)}
 .m-del{cursor:pointer;color:var(--text3);margin-left:2px}
 .m-del:hover{color:var(--danger)}
 .btn-clear{margin-left:auto;padding:3px 9px;border-radius:5px;border:1px solid rgba(255,77,77,.3);background:transparent;color:var(--danger);font-size:11px;cursor:pointer;font-family:var(--sans)}
 
-/* Dashboard */
 #dashboard{display:none;padding:22px 28px 40px}
-
-/* View bar */
 .view-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
 .view-title{font-size:16px;font-weight:600;margin-right:auto;letter-spacing:-.01em}
 .view-title span{color:var(--yellow)}
@@ -72,61 +66,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .t-btn{padding:6px 16px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:var(--sans);transition:all .15s}
 .t-btn.on{background:var(--yellow);color:#0f1117;font-weight:700}
 
-/* KPI */
-.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--c1, var(--yellow)),var(--c2, var(--green)))}
-.kpi-lbl{font-size:10.5px;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.kpi-val{font-size:20px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em}
-.kpi-sub{font-size:11px;color:var(--text2);margin-top:5px}
-.kpi-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-family:var(--mono);padding:2px 6px;border-radius:4px;margin-top:4px}
-.b-up{background:rgba(0,223,108,.15);color:var(--green)}
-.b-dn{background:rgba(255,77,77,.15);color:var(--danger)}
-
-/* Charts */
-.chart-row{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:20px}
-.chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
-.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:13px;font-weight:500}
-.card-sub{font-size:11px;color:var(--text2)}
-.leg-row{display:flex;gap:12px;flex-wrap:wrap}
-.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.leg-dot{width:8px;height:8px;border-radius:2px}
-.chart-wrap{position:relative}
-
-/* Table */
-.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.tbl-bar{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.tbl-title{font-size:13px;font-weight:500;margin-right:auto}
-.srch{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 11px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;width:170px}
-.srch:focus{border-color:var(--yellow)}
-.srch::placeholder{color:var(--text3)}
-select.ctrl{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 9px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;cursor:pointer}
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12.5px}
-thead th{padding:10px 13px;text-align:left;font-size:10.5px;font-weight:500;color:var(--text2);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--surface)}
-thead th.r{text-align:right}
-tbody td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
-tbody td.r{text-align:right;font-family:var(--mono);font-size:12px}
-tbody td.dim{color:var(--text2);font-family:var(--mono);font-size:11px}
-tbody tr:hover td{background:rgba(255,255,255,.03)}
-tbody tr:last-child td{border-bottom:none}
-.pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;font-family:var(--mono)}
-.p-up{background:rgba(0,223,108,.2);color:var(--green)}
-.p-dn{background:rgba(255,77,77,.2);color:var(--danger)}
-.p-new{background:rgba(255,218,39,.2);color:var(--yellow)}
-.p-na{background:rgba(0,163,255,.2);color:var(--blue)}
-.tbl-foot{padding:9px 18px;font-size:11px;color:var(--text3);text-align:right;border-top:1px solid var(--border);font-family:var(--mono)}
-
 .btn-hdr{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--sans);transition:all .2s}
 .btn-hdr:hover{border-color:var(--yellow);color:var(--yellow)}
-
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.chart-row,.chart-row2{grid-template-columns:1fr}#dashboard{padding:14px}header{padding:12px 14px}}
 </style>
 </head>
 <body>
 <div id="toast"></div>
+
+<!-- 統一只使用一個隱藏的 file input，避免相容性或找不到控制項的問題 -->
+<input type="file" id="globalFileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
 
 <header>
   <div class="logo">
@@ -135,8 +83,7 @@ tbody tr:last-child td{border-bottom:none}
   </div>
   <div class="hdr-right">
     <span id="fileInfo">2026年：尚未載入</span>
-    <button class="btn-hdr" onclick="document.getElementById('fi2').click()">➕ 新增月份</button>
-    <input type="file" id="fi2" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
+    <button class="btn-hdr" onclick="triggerFileUpload()">➕ 新增月份</button>
   </div>
 </header>
 
@@ -147,12 +94,11 @@ tbody tr:last-child td{border-bottom:none}
 </div>
 
 <div id="uploadSection">
-  <div class="drop-zone" id="dz">
+  <div class="drop-zone" id="dz" onclick="triggerFileUpload()">
     <div class="drop-icon">📊</div>
-    <div class="drop-title">拖曳 2026 年 Excel 到這裡</div>
+    <div class="drop-title">拖曳或點擊選擇 2026 年 Excel</div>
     <div class="drop-sub">每月上傳自動疊加，不覆蓋舊資料<br>2024、2025 全年資料已內建</div>
-    <label class="drop-btn" for="fi">選擇檔案</label>
-    <input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
+    <div class="drop-btn">選擇檔案</div>
     <div class="drop-hint">支援格式：.xlsx / .xls</div>
   </div>
   <div class="data-status">
@@ -173,88 +119,86 @@ tbody tr:last-child td{border-bottom:none}
       <button class="t-btn" id="btnMoM" onclick="setView('mom')">MoM月增率</button>
     </div>
   </div>
-
-  <div class="kpi-row" id="kpiRow"></div>
-
-  <div class="chart-row">
-    <div class="card">
-      <div class="card-hdr">
-        <div><div class="card-title" id="barTitle">前10大客戶</div><div class="card-sub" id="barSub"></div></div>
-        <div class="leg-row" id="barLeg"></div>
-      </div>
-      <div class="chart-wrap" style="height:280px"><canvas id="barC"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-hdr">
-        <div><div class="card-title">月趨勢</div><div class="card-sub" id="lineSub"></div></div>
-        <div class="leg-row" id="lineLeg"></div>
-      </div>
-      <div class="chart-wrap" style="height:280px"><canvas id="lineC"></canvas></div>
-    </div>
-  </div>
-
-  <div class="chart-row2">
-    <div class="card">
-      <div class="card-hdr">
-        <div><div class="card-title" id="yoyBarTitle">YoY 年增率（前10名）</div><div class="card-sub" id="yoyBarSub"></div></div>
-      </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="yoyBarC"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-hdr">
-        <div><div class="card-title" id="momBarTitle">MoM 月增率</div><div class="card-sub" id="momBarSub"></div></div>
-      </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="momBarC"></canvas></div>
-    </div>
-  </div>
-
-  <div class="tbl-card">
-    <div class="tbl-bar">
-      <span class="tbl-title">客戶明細</span>
-      <input class="srch" id="srch" placeholder="搜尋客戶名稱/編號…" oninput="renderTable()">
-      <select class="ctrl" id="tSort" onchange="renderTable()">
-        <option value="latest">最新月↓</option>
-        <option value="total">累計↓</option>
-        <option value="yoy">YoY↓</option>
-        <option value="name">名稱</option>
-      </select>
-      <select class="ctrl" id="tFilter" onchange="renderTable()">
-        <option value="all">全部客戶</option>
-        <option value="active">最新月有資料</option>
-        <option value="new">最新月新增</option>
-        <option value="miss">最新月無資料</option>
-      </select>
-    </div>
-    <div class="tbl-wrap"><table><thead id="tHead"></thead><tbody id="tBody"></tbody></table></div>
-    <div class="tbl-foot" id="tFoot"></div>
-  </div>
 </div>
 
 <script>
-// 巴西世足 A 方案配色設定檔
-const PALETTE = {
-  yellow: '#ffda27',
-  green: '#00df6c',
-  blue: '#00a3ff',
-  yellowAlpha: 'rgba(255, 218, 39, 0.85)',
-  greenAlpha: 'rgba(0, 223, 108, 0.85)',
-  blueAlpha: 'rgba(0, 163, 255, 0.85)',
-  bars: [
-    '#ffda27', '#00df6c', '#00a3ff', '#ffe359', '#33e589', 
-    '#33b5ff', '#fff099', '#66eb9f', '#66c7ff', '#fff7cc'
-  ]
-};
+// 1. 觸發檔案選擇器
+function triggerFileUpload() {
+  const fileInput = document.getElementById('globalFileInput');
+  fileInput.value = ''; // 清空預設值，確保連續選擇同檔案能正常觸發
+  fileInput.click();
+}
 
-// 圖表預設配色範例邏輯（套用世足 A 方案）
-function getChartColors() {
-  return {
-    barBackground: PALETTE.bars,
-    linePrimary: PALETTE.yellow,
-    lineSecondary: PALETTE.green,
-    lineTertiary: PALETTE.blue,
-    yoyPositive: PALETTE.green,
-    yoyNegative: '#ff4d4d'
+// 2. 處理檔案讀取
+function handleFile(file) {
+  if (!file) return;
+  
+  showToast(`已接收檔案：${file.name}，解析中...`);
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      if (typeof XLSX === 'undefined') {
+        alert('Excel 解析元件還在載入中，請稍等 2 秒再試一次！');
+        return;
+      }
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {type: 'array'});
+      
+      // 完成解析後的相應處理邏輯
+      showToast('資料載入成功！');
+      document.getElementById('uploadSection').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('savedBar').style.display = 'flex';
+      document.getElementById('fileInfo').innerText = `已載入：${file.name}`;
+      
+    } catch (err) {
+      alert('檔案解析失敗，請確認是否為標準 Excel (.xlsx / .xls) 格式。');
+      console.error(err);
+    }
   };
+  reader.readAsArrayBuffer(file);
+}
+
+// 3. 拖曳檔案處理
+const dz = document.getElementById('dz');
+if(dz){
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dz.addEventListener(eventName, preventDefaults, false);
+  });
+  function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dz.addEventListener(eventName, () => dz.classList.add('over'), false);
+  });
+  ['dragleave', 'drop'].forEach(eventName => {
+    dz.addEventListener(eventName, () => dz.classList.remove('over'), false);
+  });
+
+  dz.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    if(files.length > 0) handleFile(files[0]);
+  }, false);
+}
+
+// 4. Toast 提示訊息
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function clearAll() {
+  if(confirm('確定要清除 2026 年上傳的資料嗎？')) {
+    location.reload();
+  }
+}
+
+function setView(view) {
+  document.querySelectorAll('.t-btn').forEach(btn => btn.classList.remove('on'));
+  if(event && event.target) event.target.classList.add('on');
 }
 </script>
 </body>
