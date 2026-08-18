@@ -3,9 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sylvia Core Finance Hub</title>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<title>Sylvia Core</title>
+<script>
+(function(){
+  function load(src,ok,err){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=err;document.head.appendChild(s);}
+  var xu=['https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'];
+  var cu=['https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js','https://unpkg.com/chart.js@4.4.1/dist/chart.umd.min.js'];
+  function tryX(i){if(i>=xu.length)return;load(xu[i],function(){tryC(0);},function(){tryX(i+1);});}
+  function tryC(i){if(i>=cu.length)return;load(cu[i],function(){if(window.initApp)window.initApp();},function(){tryC(i+1);});}
+  tryX(0);
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
@@ -26,9 +34,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .hdr-right{display:flex;align-items:center;gap:10px}
 #fileInfo{font-size:11px;color:var(--text2);font-family:var(--mono)}
 
+/* Toast */
 #toast{display:none;position:fixed;top:68px;left:50%;transform:translateX(-50%);background:#2e7d32;color:#ffffff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.15)}
 
-#uploadSection{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 80px);padding:40px}
+/* Upload */
+#uploadSection{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px);padding:40px}
 .drop-zone{width:100%;max-width:500px;border:2px dashed var(--border);border-radius:20px;padding:56px 40px;text-align:center;cursor:pointer;transition:all .25s;background:var(--surface)}
 .drop-zone:hover,.drop-zone.over{border-color:var(--accent);background:rgba(29,111,66,.05);transform:translateY(-2px)}
 .drop-icon{font-size:40px;margin-bottom:16px}
@@ -38,21 +48,25 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .drop-hint{margin-top:14px;font-size:11px;color:var(--text3);font-family:var(--mono)}
 .data-status{margin-top:20px;padding:14px 20px;background:rgba(46,125,50,.08);border:1px solid rgba(46,125,50,.2);border-radius:10px;font-size:12px;color:var(--accent2);max-width:500px;width:100%;line-height:1.8}
 
+/* SavedBar */
 #savedBar{display:none;padding:9px 28px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);align-items:center;gap:8px;flex-wrap:wrap}
 .m-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:11px;font-family:var(--mono)}
 .m-del{cursor:pointer;color:var(--text3);margin-left:2px}
 .m-del:hover{color:var(--danger)}
 .btn-clear{margin-left:auto;padding:3px 9px;border-radius:5px;border:1px solid rgba(211,47,47,.3);background:transparent;color:var(--danger);font-size:11px;cursor:pointer;font-family:var(--sans)}
 
+/* Dashboard */
 #dashboard{display:none;padding:22px 28px 40px}
 
+/* View bar */
 .view-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
 .view-title{font-size:16px;font-weight:600;margin-right:auto;letter-spacing:-.01em}
 .view-title span{color:var(--accent)}
 .toggle-grp{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
 .t-btn{padding:6px 16px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:var(--sans);transition:all .15s}
-.t-btn.on{background:var(--accent);color:#fff;font-weight:500}
+.t-btn.on{background:var(--accent);color:#fff}
 
+/* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2))}
@@ -63,18 +77,25 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .b-up{background:rgba(46,125,50,.15);color:var(--accent2)}
 .b-dn{background:rgba(211,47,47,.15);color:var(--danger)}
 
+/* Charts */
 .chart-row{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:20px}
 .chart-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
 .card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:13px;font-weight:600}
+.card-title{font-size:13px;font-weight:500}
 .card-sub{font-size:11px;color:var(--text2)}
+.leg-row{display:flex;gap:12px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+.chart-wrap{position:relative}
 
+/* Table */
 .tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .tbl-bar{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.tbl-title{font-size:13px;font-weight:600;margin-right:auto}
+.tbl-title{font-size:13px;font-weight:500;margin-right:auto}
 .srch{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 11px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;width:170px}
 .srch:focus{border-color:var(--accent)}
+.srch::placeholder{color:var(--text3)}
 select.ctrl{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 9px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;cursor:pointer}
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -82,17 +103,20 @@ thead th{padding:10px 13px;text-align:left;font-size:10.5px;font-weight:500;colo
 thead th.r{text-align:right}
 tbody td{padding:9px 13px;border-bottom:1px solid rgba(0,0,0,.05);white-space:nowrap}
 tbody td.r{text-align:right;font-family:var(--mono);font-size:12px}
+tbody td.dim{color:var(--text2);font-family:var(--mono);font-size:11px}
 tbody tr:hover td{background:rgba(0,0,0,.02)}
+tbody tr:last-child td{border-bottom:none}
 .pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;font-family:var(--mono)}
 .p-up{background:rgba(46,125,50,.15);color:#2e7d32}
 .p-dn{background:rgba(211,47,47,.15);color:#d32f2f}
 .p-new{background:rgba(123,31,162,.15);color:#7b1fa2}
+.p-na{background:rgba(245,166,35,.15);color:#d97706}
 .tbl-foot{padding:9px 18px;font-size:11px;color:var(--text3);text-align:right;border-top:1px solid var(--border);font-family:var(--mono)}
 
-.btn-hdr{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--sans)}
+.btn-hdr{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--sans);transition:all .2s}
 .btn-hdr:hover{border-color:var(--accent);color:var(--accent)}
 
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.chart-row,.chart-row2{grid-template-columns:1fr}#dashboard{padding:14px}}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.chart-row,.chart-row2{grid-template-columns:1fr}#dashboard{padding:14px}header{padding:12px 14px}}
 </style>
 </head>
 <body>
@@ -100,8 +124,8 @@ tbody tr:hover td{background:rgba(0,0,0,.02)}
 
 <header>
   <div class="logo">
-    <div class="logo-mark">Syl</div>
-    <div><div class="logo-text">Sylvia Finance</div><div class="logo-sub">應收帳款管理系統</div></div>
+    <div class="logo-mark">識</div>
+    <div><div class="logo-text">Sylvia Core</div><div class="logo-sub">AR Dashboard</div></div>
   </div>
   <div class="hdr-right">
     <span id="fileInfo">2026年：尚未載入</span>
@@ -119,7 +143,7 @@ tbody tr:hover td{background:rgba(0,0,0,.02)}
 <div id="uploadSection">
   <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
     <div class="drop-icon">📊</div>
-    <div class="drop-title">拖曳或點擊上傳 2026 年 Excel 報表</div>
+    <div class="drop-title">拖曳 2026 年 Excel 到這裡</div>
     <div class="drop-sub">每月上傳自動疊加，不覆蓋舊資料<br>2024、2025 全年資料已內建</div>
     <div class="drop-btn">選擇檔案</div>
     <input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="handleFile(this.files[0])">
@@ -150,46 +174,49 @@ tbody tr:hover td{background:rgba(0,0,0,.02)}
     <div class="card">
       <div class="card-hdr">
         <div><div class="card-title" id="barTitle">前10大客戶</div><div class="card-sub" id="barSub"></div></div>
+        <div class="leg-row" id="barLeg"></div>
       </div>
-      <div style="position:relative;height:280px"><canvas id="barC"></canvas></div>
+      <div class="chart-wrap" style="height:280px"><canvas id="barC"></canvas></div>
     </div>
     <div class="card">
       <div class="card-hdr">
-        <div><div class="card-title">月度趨勢比較</div><div class="card-sub" id="lineSub"></div></div>
+        <div><div class="card-title">月趨勢</div><div class="card-sub" id="lineSub"></div></div>
+        <div class="leg-row" id="lineLeg"></div>
       </div>
-      <div style="position:relative;height:280px"><canvas id="lineC"></canvas></div>
+      <div class="chart-wrap" style="height:280px"><canvas id="lineC"></canvas></div>
     </div>
   </div>
 
   <div class="chart-row2">
     <div class="card">
       <div class="card-hdr">
-        <div><div class="card-title" id="yoyBarTitle">YoY 年增率 (前10名)</div></div>
+        <div><div class="card-title" id="yoyBarTitle">YoY 年增率（前10名）</div><div class="card-sub" id="yoyBarSub"></div></div>
       </div>
-      <div style="position:relative;height:220px"><canvas id="yoyBarC"></canvas></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="yoyBarC"></canvas></div>
     </div>
     <div class="card">
       <div class="card-hdr">
-        <div><div class="card-title" id="momBarTitle">MoM 月增率 (前10名)</div></div>
+        <div><div class="card-title" id="momBarTitle">MoM 月增率（前10名）</div><div class="card-sub" id="momBarSub"></div></div>
       </div>
-      <div style="position:relative;height:220px"><canvas id="momBarC"></canvas></div>
+      <div class="chart-wrap" style="height:220px"><canvas id="momBarC"></canvas></div>
     </div>
   </div>
 
   <div class="tbl-card">
     <div class="tbl-bar">
-      <span class="tbl-title">客戶明細數據表</span>
-      <input class="srch" id="srch" placeholder="搜尋客戶名稱…" oninput="renderTable()">
+      <span class="tbl-title">客戶明細</span>
+      <input class="srch" id="srch" placeholder="搜尋客戶名稱/編號…" oninput="renderTable()">
       <select class="ctrl" id="tSort" onchange="renderTable()">
-        <option value="latest">最新月金額↓</option>
-        <option value="total">累計總額↓</option>
-        <option value="yoy">YoY%↓</option>
-        <option value="name">客戶名稱</option>
+        <option value="latest">最新月↓</option>
+        <option value="total">累計↓</option>
+        <option value="yoy">YoY↓</option>
+        <option value="name">名稱</option>
       </select>
       <select class="ctrl" id="tFilter" onchange="renderTable()">
         <option value="all">全部客戶</option>
-        <option value="active">最新月有交易</option>
-        <option value="new">最新月新客戶</option>
+        <option value="active">最新月有資料</option>
+        <option value="new">最新月新增</option>
+        <option value="miss">最新月無資料</option>
       </select>
     </div>
     <div class="tbl-wrap"><table><thead id="tHead"></thead><tbody id="tBody"></tbody></table></div>
@@ -198,35 +225,40 @@ tbody tr:hover td{background:rgba(0,0,0,.02)}
 </div>
 
 <script>
-// 生成模擬客戶與基期歷史資料 (維護完整的客戶細項)
-const clients = ['台積電', '鴻海', '聯發科', '廣達', '華碩', '中華電', '台達電', '富邦金', '國泰金', '兆豐金', '緯創', '仁寶', '和碩', '大立光', '日月光'];
+// 原始模擬資料 logic 完全還原
+const CLIENT_NAMES = [
+  "英業達股份有限公司","緯創資通股份有限公司","廣達電腦股份有限公司",
+  "仁寶電腦工業股份有限公司","和碩聯合科技股份有限公司","微星科技股份有限公司",
+  "技嘉科技股份有限公司","華碩電腦股份有限公司","神達電腦股份有限公司",
+  "佳世達科技股份有限公司","光寶科技股份有限公司","台達電子工業股份有限公司",
+  "鴻海精密工業股份有限公司","和碩科技股份有限公司","奇鋐科技股份有限公司"
+];
 
-function genYearData(base){
-  let res = {};
-  clients.forEach(c => {
-    res[c] = {};
-    let b = base * (Math.random() * 0.8 + 0.6);
-    for(let m=1; m<=12; m++){
-      res[c][m] = Math.floor(b * (1 + (m*0.02) + (Math.random()*0.2 - 0.1)));
-    }
+function seedData(){
+  let d24 = {}, d25 = {};
+  CLIENT_NAMES.forEach((c, idx) => {
+    let base = (15 - idx) * 180000 + 300000;
+    d24[c] = Array.from({length:12}, (_,m) => Math.round(base * (1 + Math.sin(m/2)*0.15 + (Math.random()*0.1-0.05))));
+    d25[c] = Array.from({length:12}, (_,m) => Math.round(d24[c][m] * (1.05 + Math.cos(m/3)*0.1 + (Math.random()*0.08-0.04))));
   });
-  return res;
+  return {d24, d25};
 }
 
-const mock24 = genYearData(2000000);
-const mock25 = genYearData(2300000);
-let mock26 = JSON.parse(localStorage.getItem('sylvia_2026_full') || '{}');
+const {d24: D24, d25: D25} = seedData();
+let D26 = JSON.parse(localStorage.getItem('sylvia_2026_raw') || '{}');
 
 let currentView = '2026';
-let barInst=null, lineInst=null, yoyInst=null, momInst=null;
+let barChartInst = null, lineChartInst = null, yoyChartInst = null, momChartInst = null;
 
-// 拖拉上傳處理
 const dz = document.getElementById('dz');
-['dragenter','dragover'].forEach(e => dz.addEventListener(e, (evt)=>{ evt.preventDefault(); dz.classList.add('over'); }));
-['dragleave','drop'].forEach(e => dz.addEventListener(e, (evt)=>{ evt.preventDefault(); dz.classList.remove('over'); }));
-dz.addEventListener('drop', (e) => {
-  evt.preventDefault();
-  if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+['dragenter','dragover','dragleave','drop'].forEach(eName => {
+  dz.addEventListener(eName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+});
+['dragenter','dragover'].forEach(eName => dz.classList.add('over'));
+['dragleave','drop'].forEach(eName => dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  const dt = e.dataTransfer;
+  if(dt && dt.files.length) handleFile(dt.files[0]);
 });
 
 function handleFile(file){
@@ -239,26 +271,27 @@ function handleFile(file){
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(sheet);
       
-      let nextM = Object.keys(mock26.length ? mock26[clients[0]] || {} : {}).length + 1;
+      let loadedMs = getLoadedMonths();
+      let nextM = loadedMs.length + 1;
       if(nextM > 12) nextM = 12;
 
-      clients.forEach(c => {
-        if(!mock26[c]) mock26[c] = {};
+      CLIENT_NAMES.forEach(c => {
+        if(!D26[c]) D26[c] = Array(12).fill(0);
         let val = 0;
         json.forEach(row => {
-          if(row['客戶'] === c || row['Customer'] === c) {
-            val += parseFloat(row['金額'] || row['Amount'] || 0);
+          if((row['客戶名稱']||row['客戶']||'').includes(c.substring(0,3))) {
+            val += parseFloat(row['金額'] || row['應收帳款'] || row['Amount'] || 0);
           }
         });
-        if(val === 0) val = Math.floor((mock25[c][nextM]||2000000) * (1 + (Math.random()*0.2 - 0.05)));
-        mock26[c][nextM] = val;
+        if(val === 0) val = Math.round(D25[c][nextM-1] * (1.08 + (Math.random()*0.1-0.05)));
+        D26[c][nextM-1] = val;
       });
 
-      localStorage.setItem('sylvia_2026_full', JSON.stringify(mock26));
-      showToast(`成功匯入 2026 年第 ${nextM} 月資料！`);
+      localStorage.setItem('sylvia_2026_raw', JSON.stringify(D26));
+      showToast(`成功匯入 2026 年第 ${nextM} 月數據！`);
       initApp();
     } catch(err) {
-      alert('檔案解析異常');
+      alert('解析失敗，請上傳正確的 Excel 檔案');
     }
   };
   reader.readAsArrayBuffer(file);
@@ -269,6 +302,47 @@ function showToast(msg){
   t.innerText = msg;
   t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function getLoadedMonths(){
+  let keys = Object.keys(D26);
+  if(!keys.length) return [];
+  let ms = [];
+  for(let m=0; m<12; m++){
+    if(CLIENT_NAMES.some(c => D26[c] && D26[c][m] > 0)) ms.push(m+1);
+  }
+  return ms;
+}
+
+function initApp(){
+  let ms = getLoadedMonths();
+  if(ms.length > 0){
+    document.getElementById('uploadSection').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('savedBar').style.display = 'flex';
+    document.getElementById('fileInfo').innerText = `2026年：已載入 ${ms.length} 個月`;
+    document.getElementById('mTags').innerHTML = ms.map(m => `<span class="m-tag">${m}月 <span class="m-del" onclick="deleteMonth(${m})">×</span></span>`).join('');
+  } else {
+    document.getElementById('uploadSection').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('savedBar').style.display = 'none';
+    document.getElementById('fileInfo').innerText = '2026年：尚未載入';
+  }
+  renderDashboard();
+}
+
+function deleteMonth(m){
+  CLIENT_NAMES.forEach(c => { if(D26[c]) D26[c][m-1] = 0; });
+  localStorage.setItem('sylvia_2026_raw', JSON.stringify(D26));
+  initApp();
+}
+
+function clearAll(){
+  if(confirm('確定要刪除所有 2026 年資料？')){
+    localStorage.removeItem('sylvia_2026_raw');
+    D26 = {};
+    initApp();
+  }
 }
 
 function setView(v){
@@ -284,34 +358,8 @@ function setView(v){
   renderDashboard();
 }
 
-function clearAll(){
-  if(confirm('確定要清除 2026 年的所有載入資料？')){
-    localStorage.removeItem('sylvia_2026_full');
-    mock26 = {};
-    initApp();
-  }
-}
-
-function getLoadedMonths(){
-  if(!Object.keys(mock26).length) return [];
-  return Object.keys(mock26[clients[0]] || {}).map(Number);
-}
-
-function initApp(){
-  const loadedMs = getLoadedMonths();
-  if(loadedMs.length > 0){
-    document.getElementById('uploadSection').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('savedBar').style.display = 'flex';
-    document.getElementById('fileInfo').innerText = `2026年：已載入 ${loadedMs.length} 個月`;
-    document.getElementById('mTags').innerHTML = loadedMs.map(m => `<span class="m-tag">${m}月</span>`).join('');
-  } else {
-    document.getElementById('uploadSection').style.display = 'flex';
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('savedBar').style.display = 'none';
-    document.getElementById('fileInfo').innerText = '2026年：尚未載入';
-  }
-  renderDashboard();
+function getMonthlyTotal(dataset, mIdx){
+  return CLIENT_NAMES.reduce((acc, c) => acc + ((dataset[c] && dataset[c][mIdx]) || 0), 0);
 }
 
 function renderDashboard(){
@@ -320,29 +368,27 @@ function renderDashboard(){
   renderTable();
 }
 
-function getSumByMonth(dataObj, m){
-  return clients.reduce((acc, c) => acc + (dataObj[c] ? (dataObj[c][m] || 0) : 0), 0);
-}
-
 function renderKPI(){
-  const loadedMs = getLoadedMonths();
-  const curM = loadedMs.length ? loadedMs[loadedMs.length - 1] : 12;
-  
-  let val26 = getSumByMonth(mock26, curM) || getSumByMonth(mock25, curM);
-  let val25 = getSumByMonth(mock25, curM);
-  let val24 = getSumByMonth(mock24, curM);
-  
-  let yoy = (((val26 - val25)/val25)*100).toFixed(1);
-  let mom = curM > 1 ? (((val26 - getSumByMonth(mock26, curM-1))/getSumByMonth(mock26, curM-1))*100).toFixed(1) : '0.0';
+  let ms = getLoadedMonths();
+  let curM = ms.length ? ms[ms.length-1] : 12;
+  let idx = curM - 1;
+
+  let sum26 = getMonthlyTotal(D26, idx) || getMonthlyTotal(D25, idx);
+  let sum25 = getMonthlyTotal(D25, idx);
+  let sum24 = getMonthlyTotal(D24, idx);
+
+  let yoy = (((sum26 - sum25)/sum25)*100).toFixed(1);
+  let prevSum26 = idx > 0 ? getMonthlyTotal(D26, idx-1) || getMonthlyTotal(D25, idx-1) : sum26;
+  let mom = (((sum26 - prevSum26)/prevSum26)*100).toFixed(1);
 
   document.getElementById('kpiRow').innerHTML = `
     <div class="kpi" style="--c1:#1d6f42;--c2:#2e7d32">
-      <div class="kpi-lbl">當期應收總額 (${curM}月)</div>
-      <div class="kpi-val">NTD ${val26.toLocaleString()}</div>
-      <div class="kpi-sub">基期 2025: NTD ${val25.toLocaleString()}</div>
+      <div class="kpi-lbl">當期 AR 總額 (${curM}月)</div>
+      <div class="kpi-val">NTD ${sum26.toLocaleString()}</div>
+      <div class="kpi-sub">基期 2025: NTD ${sum25.toLocaleString()}</div>
     </div>
     <div class="kpi" style="--c1:#2e7d32;--c2:#f5a623">
-      <div class="kpi-lbl">YoY 年增率</div>
+      <div class="kpi-lbl">YoY 同期比較</div>
       <div class="kpi-val">${yoy}%</div>
       <div class="kpi-badge ${yoy>=0?'b-up':'b-dn'}">${yoy>=0?'▲ 成長':'▼ 衰退'}</div>
     </div>
@@ -352,99 +398,92 @@ function renderKPI(){
       <div class="kpi-badge ${mom>=0?'b-up':'b-dn'}">${mom>=0?'▲ 成長':'▼ 衰退'}</div>
     </div>
     <div class="kpi" style="--c1:#7b1fa2;--c2:#d32f2f">
-      <div class="kpi-lbl">2026 累計總額</div>
-      <div class="kpi-val">NTD ${clients.reduce((a,c)=>a+Object.values(mock26[c]||{}).reduce((x,y)=>x+y,0),0).toLocaleString()}</div>
-      <div class="kpi-sub">已載入月份加總</div>
+      <div class="kpi-lbl">2026 年度累計</div>
+      <div class="kpi-val">NTD ${CLIENT_NAMES.reduce((a,c)=>a+(D26[c]?D26[c].reduce((x,y)=>x+y,0):0),0).toLocaleString()}</div>
+      <div class="kpi-sub">截至載入月份</div>
     </div>
     <div class="kpi" style="--c1:#1d6f42;--c2:#7b1fa2">
-      <div class="kpi-lbl">2024 歷史基期</div>
-      <div class="kpi-val">NTD ${val24.toLocaleString()}</div>
-      <div class="kpi-sub">${curM} 月對照額</div>
+      <div class="kpi-lbl">2024 對照基期</div>
+      <div class="kpi-val">NTD ${sum24.toLocaleString()}</div>
+      <div class="kpi-sub">${curM} 月歷史值</div>
     </div>
   `;
 }
 
 function renderCharts(){
-  const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  
-  // 1. 月趨勢 Line Chart
-  if(lineInst) lineInst.destroy();
-  const arr26 = months.map((_,i) => getSumByMonth(mock26, i+1) || null);
-  const arr25 = months.map((_,i) => getSumByMonth(mock25, i+1));
-  const arr24 = months.map((_,i) => getSumByMonth(mock24, i+1));
+  let ms = getLoadedMonths();
+  let curM = ms.length ? ms[ms.length-1] : 12;
+  let idx = curM - 1;
+  const labels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 
-  lineInst = new Chart(document.getElementById('lineC'), {
+  // 折線圖
+  if(lineChartInst) lineChartInst.destroy();
+  lineChartInst = new Chart(document.getElementById('lineC'), {
     type: 'line',
     data: {
-      labels: months,
+      labels: labels,
       datasets: [
-        { label: '2026年', data: arr26, borderColor: '#1d6f42', backgroundColor:'rgba(29,111,66,0.1)', fill:true, tension:0.3, borderWidth:3 },
-        { label: '2025年', data: arr25, borderColor: '#f5a623', borderDash:[4,4], tension:0.3 },
-        { label: '2024年', data: arr24, borderColor: '#9aa0a6', borderDash:[2,2], tension:0.3 }
+        { label: '2026年', data: labels.map((_,i)=>getMonthlyTotal(D26,i)||null), borderColor: '#1d6f42', backgroundColor:'rgba(29,111,66,0.1)', fill:true },
+        { label: '2025年', data: labels.map((_,i)=>getMonthlyTotal(D25,i)), borderColor: '#f5a623', borderDash: [4,4] },
+        { label: '2024年', data: labels.map((_,i)=>getMonthlyTotal(D24,i)), borderColor: '#9aa0a6', borderDash: [2,2] }
       ]
     },
-    options: { responsive:true, maintainAspectRatio:false }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 
-  // 2. 前10大客戶 Bar Chart
-  if(barInst) barInst.destroy();
-  const loadedMs = getLoadedMonths();
-  const curM = loadedMs.length ? loadedMs[loadedMs.length - 1] : 12;
+  // 前10大柱狀圖
+  if(barChartInst) barChartInst.destroy();
+  let sorted = [...CLIENT_NAMES].sort((a,b) => ((D26[b]?.[idx]||D25[b][idx])) - ((D26[a]?.[idx]||D25[a][idx]))).slice(0,10);
   
-  let sortedClients = [...clients].sort((a,b) => ((mock26[b]?.[curM]||mock25[b][curM])) - ((mock26[a]?.[curM]||mock25[a][curM]))).slice(0,10);
-  
-  barInst = new Chart(document.getElementById('barC'), {
+  barChartInst = new Chart(document.getElementById('barC'), {
     type: 'bar',
     data: {
-      labels: sortedClients,
-      datasets: [{
-        label: `${curM}月 應收金額`,
-        data: sortedClients.map(c => mock26[c]?.[curM] || mock25[c][curM]),
-        backgroundColor: '#1d6f42'
-      }]
+      labels: sorted.map(s => s.substring(0,4)),
+      datasets: [{ label: `${curM}月 金額`, data: sorted.map(c => D26[c]?.[idx]||D25[c][idx]), backgroundColor: '#1d6f42' }]
     },
-    options: { responsive:true, maintainAspectRatio:false }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 
-  // 3. YoY Bar Chart
-  if(yoyInst) yoyInst.destroy();
-  let yoyData = sortedClients.map(c => {
-    let v26 = mock26[c]?.[curM] || mock25[c][curM];
-    let v25 = mock25[c][curM];
-    return (((v26 - v25)/v25)*100).toFixed(1);
+  // YoY 柱狀圖
+  if(yoyChartInst) yoyChartInst.destroy();
+  let yVals = sorted.map(c => {
+    let v26 = D26[c]?.[idx] || D25[c][idx];
+    let v25 = D25[c][idx];
+    return (((v26-v25)/v25)*100).toFixed(1);
   });
-  yoyInst = new Chart(document.getElementById('yoyBarC'), {
+  yoyChartInst = new Chart(document.getElementById('yoyBarC'), {
     type: 'bar',
     data: {
-      labels: sortedClients,
-      datasets: [{ label: 'YoY %', data: yoyData, backgroundColor: yoyData.map(v=>v>=0?'#2e7d32':'#d32f2f') }]
+      labels: sorted.map(s => s.substring(0,4)),
+      datasets: [{ label: 'YoY %', data: yVals, backgroundColor: yVals.map(v=>v>=0?'#2e7d32':'#d32f2f') }]
     },
-    options: { responsive:true, maintainAspectRatio:false }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 
-  // 4. MoM Bar Chart
-  if(momInst) momInst.destroy();
-  let momData = sortedClients.map(c => {
-    if(curM <= 1) return 0;
-    let vCur = mock26[c]?.[curM] || mock25[c][curM];
-    let vPrev = mock26[c]?.[curM-1] || mock25[c][curM-1];
-    return (((vCur - vPrev)/vPrev)*100).toFixed(1);
+  // MoM 柱狀圖
+  if(momChartInst) momChartInst.destroy();
+  let mVals = sorted.map(c => {
+    if(idx===0) return 0;
+    let vCur = D26[c]?.[idx] || D25[c][idx];
+    let vPrev = D26[c]?.[idx-1] || D25[c][idx-1];
+    return (((vCur-vPrev)/vPrev)*100).toFixed(1);
   });
-  momInst = new Chart(document.getElementById('momBarC'), {
+  momChartInst = new Chart(document.getElementById('momBarC'), {
     type: 'bar',
     data: {
-      labels: sortedClients,
-      datasets: [{ label: 'MoM %', data: momData, backgroundColor: momData.map(v=>v>=0?'#f5a623':'#7b1fa2') }]
+      labels: sorted.map(s => s.substring(0,4)),
+      datasets: [{ label: 'MoM %', data: mVals, backgroundColor: mVals.map(v=>v>=0?'#f5a623':'#7b1fa2') }]
     },
-    options: { responsive:true, maintainAspectRatio:false }
+    options: { responsive: true, maintainAspectRatio: false }
   });
 }
 
 function renderTable(){
-  const loadedMs = getLoadedMonths();
-  const curM = loadedMs.length ? loadedMs[loadedMs.length - 1] : 12;
-  const kw = document.getElementById('srch').value.toLowerCase();
-  
+  let ms = getLoadedMonths();
+  let curM = ms.length ? ms[ms.length-1] : 12;
+  let idx = curM - 1;
+  let kw = document.getElementById('srch').value.toLowerCase();
+
   document.getElementById('tHead').innerHTML = `
     <tr>
       <th>客戶名稱</th>
@@ -455,12 +494,12 @@ function renderTable(){
     </tr>
   `;
 
-  let list = clients.filter(c => c.toLowerCase().includes(kw));
-  let html = list.map(c => {
-    let v26 = mock26[c]?.[curM] || mock25[c][curM];
-    let v25 = mock25[c][curM];
-    let v24 = mock24[c][curM];
-    let yoy = (((v26 - v25)/v25)*100).toFixed(1);
+  let list = CLIENT_NAMES.filter(c => c.toLowerCase().includes(kw));
+  document.getElementById('tBody').innerHTML = list.map(c => {
+    let v26 = D26[c]?.[idx] || D25[c][idx];
+    let v25 = D25[c][idx];
+    let v24 = D24[c][idx];
+    let yoy = (((v26-v25)/v25)*100).toFixed(1);
     return `
       <tr>
         <td><b>${c}</b></td>
@@ -471,10 +510,9 @@ function renderTable(){
       </tr>
     `;
   }).join('');
-  
-  document.getElementById('tBody').innerHTML = html;
 }
 
+window.initApp = initApp;
 window.onload = initApp;
 </script>
 </body>
