@@ -492,7 +492,7 @@ function pctTag(pct){
 }
 function dc(k){if(CHARTS[k]){CHARTS[k].destroy();delete CHARTS[k];}}
 
-const TC='#1a1a1a', GC='rgba(0,0,0,0.07)';
+const TC='#111111', GC='rgba(0,0,0,0.07)';
 
 function renderAll(){renderKPIs();renderBarChart();renderLineChart();renderYoYBar();renderMoMBar();renderTableHead();renderTable();}
 
@@ -576,12 +576,27 @@ function renderBarChart(){
     document.getElementById('barLeg').innerHTML=show.map((m,i)=>`<div class="leg"><div class="leg-dot" style="background:${PAL[i]}"></div>${m}</div>`).join('');
   }else if(VIEW==='2025'){
     const tot=c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0),top10=[...c25].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
-    labels=top10.map(c=>c.name);datasets=[{label:'2025全年',data:top10.map(c=>tot(c)),backgroundColor:'#FFA07A',borderRadius:6,borderSkipped:false}];
-    document.getElementById('barTitle').textContent='前 10 大客戶（2025全年）';document.getElementById('barSub').textContent='依全年合計排序';document.getElementById('barLeg').innerHTML='';
+    labels=top10.map(c=>c.name);
+    const months2025h=['上半年','下半年'];
+    const half1=['1月','2月','3月','4月','5月','6月'],half2=['7月','8月','9月','10月','11月','12月'];
+    datasets=[
+      {label:'1~6月',data:top10.map(c=>half1.reduce((s,m)=>s+(c[m]||0),0)),backgroundColor:'#1E3A8A',borderRadius:6,borderSkipped:false},
+      {label:'7~12月',data:top10.map(c=>half2.reduce((s,m)=>s+(c[m]||0),0)),backgroundColor:'#FFA07A',borderRadius:6,borderSkipped:false}
+    ];
+    document.getElementById('barTitle').textContent='前 10 大客戶（2025全年）';
+    document.getElementById('barSub').textContent='依全年合計排序';
+    document.getElementById('barLeg').innerHTML='<div class="leg"><div class="leg-dot" style="background:#1E3A8A"></div>1~6月</div><div class="leg"><div class="leg-dot" style="background:#FFA07A"></div>7~12月</div>';
   }else if(VIEW==='2024'){
     const tot=c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0),top10=[...c24].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
-    labels=top10.map(c=>c.name);datasets=[{label:'2024全年',data:top10.map(c=>tot(c)),backgroundColor:'#FFB627',borderRadius:6,borderSkipped:false}];
-    document.getElementById('barTitle').textContent='前 10 大客戶（2024全年）';document.getElementById('barSub').textContent='依全年合計排序';document.getElementById('barLeg').innerHTML='';
+    labels=top10.map(c=>c.name);
+    const h1_24=['1月','2月','3月','4月','5月','6月'],h2_24=['7月','8月','9月','10月','11月','12月'];
+    datasets=[
+      {label:'1~6月',data:top10.map(c=>h1_24.reduce((s,m)=>s+(c[m]||0),0)),backgroundColor:'#FFB627',borderRadius:6,borderSkipped:false},
+      {label:'7~12月',data:top10.map(c=>h2_24.reduce((s,m)=>s+(c[m]||0),0)),backgroundColor:'#00C48C',borderRadius:6,borderSkipped:false}
+    ];
+    document.getElementById('barTitle').textContent='前 10 大客戶（2024全年）';
+    document.getElementById('barSub').textContent='依全年合計排序';
+    document.getElementById('barLeg').innerHTML='<div class="leg"><div class="leg-dot" style="background:#FFB627"></div>1~6月</div><div class="leg"><div class="leg-dot" style="background:#00C48C"></div>7~12月</div>';
   }else if(VIEW==='yoy'){
     if(!m26.length)return;
     const sm=m26.filter(m=>MONTHS.includes(m));
@@ -600,7 +615,7 @@ function renderBarChart(){
     document.getElementById('barLeg').innerHTML=datasets.map((d,i)=>`<div class="leg"><div class="leg-dot" style="background:${PAL[i]}"></div>${d.label}</div>`).join('');
   }
   dc('bar');
-  CHARTS.bar=new Chart(document.getElementById('barC'),{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:TC,font:{size:11},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:GC},border:{display:false}}}}});
+  CHARTS.bar=new Chart(document.getElementById('barC'),{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false,labels:{color:'#111111',font:{size:11}}}},scales:{x:{ticks:{color:TC,font:{size:11},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:GC},border:{display:false}}}}});
 }
 
 function renderLineChart(){
@@ -623,7 +638,7 @@ function renderLineChart(){
     document.getElementById('lineLeg').innerHTML=`<div class="leg"><div class="leg-dot" style="background:${PAL[0]}"></div>2026</div><div class="leg"><div class="leg-dot" style="background:${PAL[1]}"></div>2025</div>`;
   }
   dc('line');
-  CHARTS.line=new Chart(document.getElementById('lineC'),{type:'line',data:{labels:lL,datasets:lD},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:lD.length>1,labels:{color:TC,font:{size:11},boxWidth:10}},tooltip:{callbacks:{label:ctx=>' $'+ctx.raw.toLocaleString('zh-TW')}}},scales:{x:{ticks:{color:TC,font:{size:12}},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:GC},border:{display:false}}}}});
+  CHARTS.line=new Chart(document.getElementById('lineC'),{type:'line',data:{labels:lL,datasets:lD},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:lD.length>1,labels:{color:'#111111',font:{size:11,weight:'500'},boxWidth:10}},tooltip:{callbacks:{label:ctx=>' $'+ctx.raw.toLocaleString('zh-TW')}}},scales:{x:{ticks:{color:TC,font:{size:12}},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtK(v)},grid:{color:GC},border:{display:false}}}}});
 }
 
 function renderYoYBar(){
@@ -634,7 +649,7 @@ function renderYoYBar(){
   document.getElementById('yoyBarTitle').textContent='YoY 年增率（2026 vs 2025）';
   document.getElementById('yoyBarSub').textContent=sm.join('、')+' 同期';
   dc('yoyBar');
-  CHARTS.yoyBar=new Chart(document.getElementById('yoyBarC'),{type:'bar',data:{labels:yd.map(d=>d.name),datasets:[{label:'YoY%',data:yd.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:yd.map(d=>d.pct>=0?'#00C48C':'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
+  CHARTS.yoyBar=new Chart(document.getElementById('yoyBarC'),{type:'bar',data:{labels:yd.map(d=>d.name),datasets:[{label:'YoY%',data:yd.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:yd.map(d=>d.pct>=0?'#00C48C':'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false,labels:{color:'#111111'}},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
 }
 
 function renderMoMBar(){
@@ -645,7 +660,7 @@ function renderMoMBar(){
   document.getElementById('momBarTitle').textContent=`MoM 月增率（${P} → ${L}）`;
   document.getElementById('momBarSub').textContent='2026年';
   dc('momBar');
-  CHARTS.momBar=new Chart(document.getElementById('momBarC'),{type:'bar',data:{labels:md.map(d=>d.name),datasets:[{label:'MoM%',data:md.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:md.map(d=>d.pct>=0?PAL[0]:'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
+  CHARTS.momBar=new Chart(document.getElementById('momBarC'),{type:'bar',data:{labels:md.map(d=>d.name),datasets:[{label:'MoM%',data:md.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:md.map(d=>d.pct>=0?PAL[0]:'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false,labels:{color:'#111111'}},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
 }
 
 function renderTableHead(){
