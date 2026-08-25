@@ -476,7 +476,40 @@ function clearAll(){
 function setView(v){
   VIEW=v;
   ['26','25','24','YoY','MoM'].forEach(x=>{const b=document.getElementById('btn'+x);if(b)b.classList.toggle('on',(x==='26'&&v==='2026')||(x==='25'&&v==='2025')||(x==='24'&&v==='2024')||(x==='YoY'&&v==='yoy')||(x==='MoM'&&v==='mom'));});
+  updateTableControls();
   renderAll();
+}
+
+function updateTableControls(){
+  const sortEl=document.getElementById('tSort');
+  const filtEl=document.getElementById('tFilter');
+  if(VIEW==='2025'){
+    sortEl.innerHTML=`
+      <option value="total">全年合計 ↓</option>
+      <option value="yoy">YoY vs 2024 ↓</option>
+      <option value="name">名稱</option>`;
+    filtEl.innerHTML=`
+      <option value="all">全部客戶</option>
+      <option value="active">有資料客戶</option>`;
+  }else if(VIEW==='2024'){
+    sortEl.innerHTML=`
+      <option value="total">全年合計 ↓</option>
+      <option value="name">名稱</option>`;
+    filtEl.innerHTML=`
+      <option value="all">全部客戶</option>
+      <option value="active">有資料客戶</option>`;
+  }else{
+    sortEl.innerHTML=`
+      <option value="latest">最新月 ↓</option>
+      <option value="total">累計 ↓</option>
+      <option value="yoy">YoY ↓</option>
+      <option value="name">名稱</option>`;
+    filtEl.innerHTML=`
+      <option value="all">全部客戶</option>
+      <option value="active">最新月有資料</option>
+      <option value="new">最新月新增</option>
+      <option value="miss">最新月無資料</option>`;
+  }
 }
 
 const C26=()=>STATE26.customers,M26=()=>STATE26.months,C25=()=>DATA[2025],C24=()=>DATA[2024];
@@ -554,6 +587,10 @@ function renderKPIs(){
       {lbl:'MoM 2025 參考',val:momY25!==null?(parseFloat(momY25)>=0?'+':'')+momY25+'%':'—',sub:'2025同期月增率',c1:'#7C5CFC',c2:'#38BDF8',badge:null}
     ];
   }
+  // 更新頁面主標題
+  const yearLabel = VIEW==='2025'?'2025年':VIEW==='2024'?'2024年':VIEW==='yoy'?'YoY 同期比':VIEW==='mom'?'MoM 月增率':'2026年';
+  document.getElementById('vTitle').innerHTML = `應收帳款分析 <em>· ${yearLabel}</em>`;
+
   document.getElementById('kpiRow').innerHTML=kpis.map(k=>`
     <div class="kpi" style="--c1:${k.c1};--c2:${k.c2}">
       <div class="kpi-lbl">${k.lbl}</div>
@@ -643,17 +680,81 @@ function renderLineChart(){
 
 function renderYoYBar(){
   if(typeof Chart==='undefined')return;
-  const m26=M26(),c26=C26(),c25=C25();if(!m26.length){dc('yoyBar');return;}
-  const sm=m26.filter(m=>MONTHS.includes(m));
-  const yd=c26.map(c=>{const v26=sm.reduce((s,m)=>s+(c[m]||0),0),c25c=find(c25,c.id),v25=c25c?sm.reduce((s,m)=>s+(c25c[m]||0),0):0,pct=v25>0?((v26-v25)/v25*100):null;return{name:c.name,pct,v26};}).filter(d=>d.pct!==null).sort((a,b)=>b.v26-a.v26).slice(0,10);
-  document.getElementById('yoyBarTitle').textContent='YoY 年增率（2026 vs 2025）';
-  document.getElementById('yoyBarSub').textContent=sm.join('、')+' 同期';
+  // 依 VIEW 決定比較的兩年
+  let curC, prevC, curLabel, prevLabel, useMonths;
+  if(VIEW==='2025'){
+    // 2025 視角：2025全年 vs 2024全年
+    curC=DATA[2025]; prevC=DATA[2024];
+    curLabel='2025'; prevLabel='2024';
+    useMonths=MONTHS;
+  } else if(VIEW==='2024'){
+    // 2024 無前一年資料，清空小圖
+    dc('yoyBar');
+    document.getElementById('yoyBarTitle').textContent='YoY 年增率';
+    document.getElementById('yoyBarSub').textContent='2024年無前期資料';
+    document.getElementById('yoyBarC').getContext('2d').clearRect(0,0,9999,9999);
+    return;
+  } else {
+    // 2026 / yoy / mom — 2026已有月份 vs 2025同期
+    const m26=M26(),c26=C26(),c25=C25();
+    if(!m26.length){dc('yoyBar');return;}
+    curC=c26; prevC=c25;
+    curLabel='2026'; prevLabel='2025';
+    useMonths=m26.filter(m=>MONTHS.includes(m));
+  }
+  const yd=curC.map(c=>{
+    const vCur=useMonths.reduce((s,m)=>s+(c[m]||0),0);
+    const cp=find(prevC,c.id);
+    const vPrev=cp?useMonths.reduce((s,m)=>s+(cp[m]||0),0):0;
+    const pct=vPrev>0?((vCur-vPrev)/vPrev*100):null;
+    return{name:c.name,pct,vCur};
+  }).filter(d=>d.pct!==null).sort((a,b)=>b.vCur-a.vCur).slice(0,10);
+  document.getElementById('yoyBarTitle').textContent=`YoY 年增率（${curLabel} vs ${prevLabel}）`;
+  document.getElementById('yoyBarSub').textContent=useMonths.join('、')+' 同期';
   dc('yoyBar');
   CHARTS.yoyBar=new Chart(document.getElementById('yoyBarC'),{type:'bar',data:{labels:yd.map(d=>d.name),datasets:[{label:'YoY%',data:yd.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:yd.map(d=>d.pct>=0?'#00C48C':'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false,labels:{color:'#111111'}},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
 }
 
 function renderMoMBar(){
   if(typeof Chart==='undefined')return;
+
+  // 依 VIEW 決定資料來源和比較邏輯
+  if(VIEW==='2025'){
+    // 2025：下半年 vs 上半年 MoM 趨勢（每季漲跌）
+    const c25=DATA[2025];
+    const h1=['1月','2月','3月','4月','5月','6月'],h2=['7月','8月','9月','10月','11月','12月'];
+    const tot=c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0);
+    const top10=[...c25].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
+    const md=top10.map(c=>{
+      const s1=h1.reduce((s,m)=>s+(c[m]||0),0),s2=h2.reduce((s,m)=>s+(c[m]||0),0);
+      const pct=s1>0?((s2-s1)/s1*100):null;
+      return{name:c.name,pct,v:tot(c)};
+    }).filter(d=>d.pct!==null);
+    document.getElementById('momBarTitle').textContent='上下半年增減（2025）';
+    document.getElementById('momBarSub').textContent='下半年 vs 上半年';
+    dc('momBar');
+    CHARTS.momBar=new Chart(document.getElementById('momBarC'),{type:'bar',data:{labels:md.map(d=>d.name),datasets:[{label:'半年%',data:md.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:md.map(d=>d.pct>=0?'#FFA07A':'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
+    return;
+  }
+
+  if(VIEW==='2024'){
+    const c24=DATA[2024];
+    const h1=['1月','2月','3月','4月','5月','6月'],h2=['7月','8月','9月','10月','11月','12月'];
+    const tot=c=>MONTHS.reduce((s,m)=>s+(c[m]||0),0);
+    const top10=[...c24].filter(c=>tot(c)>0).sort((a,b)=>tot(b)-tot(a)).slice(0,10);
+    const md=top10.map(c=>{
+      const s1=h1.reduce((s,m)=>s+(c[m]||0),0),s2=h2.reduce((s,m)=>s+(c[m]||0),0);
+      const pct=s1>0?((s2-s1)/s1*100):null;
+      return{name:c.name,pct,v:tot(c)};
+    }).filter(d=>d.pct!==null);
+    document.getElementById('momBarTitle').textContent='上下半年增減（2024）';
+    document.getElementById('momBarSub').textContent='下半年 vs 上半年';
+    dc('momBar');
+    CHARTS.momBar=new Chart(document.getElementById('momBarC'),{type:'bar',data:{labels:md.map(d=>d.name),datasets:[{label:'半年%',data:md.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:md.map(d=>d.pct>=0?'#FFB627':'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
+    return;
+  }
+
+  // 2026 / yoy / mom — 月增率
   const m26=M26(),c26=C26();if(m26.length<2){dc('momBar');return;}
   const L=m26[m26.length-1],P=m26[m26.length-2];
   const md=c26.map(c=>{const vL=c[L]||0,vP=c[P]||0,pct=vP>0?((vL-vP)/vP*100):null;return{name:c.name,pct,vL};}).filter(d=>d.pct!==null).sort((a,b)=>b.vL-a.vL).slice(0,10);
@@ -663,31 +764,215 @@ function renderMoMBar(){
   CHARTS.momBar=new Chart(document.getElementById('momBarC'),{type:'bar',data:{labels:md.map(d=>d.name),datasets:[{label:'MoM%',data:md.map(d=>parseFloat(d.pct.toFixed(1))),backgroundColor:md.map(d=>d.pct>=0?PAL[0]:'#FF4D6D'),borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false,labels:{color:'#111111'}},tooltip:{callbacks:{label:ctx=>` ${ctx.raw>=0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:TC,font:{size:10},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:10,family:'DM Mono'},callback:v=>v+'%'},grid:{color:GC},border:{display:false}}}}});
 }
 
+// ── 依 VIEW 決定當年資料、上年資料、月份清單 ──
+function getYearContext() {
+  // 回傳 { customers, months, prevCustomers, prevLabel, yearLabel }
+  if (VIEW === '2025' || VIEW === 'yoy' || VIEW === 'mom') {
+    // yoy/mom 主要資料仍是 2026，用下面 2026 分支
+  }
+  if (VIEW === '2025') {
+    return {
+      customers: DATA[2025],
+      months: MONTHS,
+      prevCustomers: DATA[2024],
+      prevLabel: '2024',
+      yearLabel: '2025'
+    };
+  }
+  if (VIEW === '2024') {
+    return {
+      customers: DATA[2024],
+      months: MONTHS,
+      prevCustomers: null,   // 無 2023 資料
+      prevLabel: null,
+      yearLabel: '2024'
+    };
+  }
+  // 2026 / yoy / mom — 全用 STATE26
+  return {
+    customers: C26(),
+    months: M26(),
+    prevCustomers: DATA[2025],
+    prevLabel: '2025',
+    yearLabel: '2026'
+  };
+}
+
 function renderTableHead(){
-  const m26=M26();if(!m26.length)return;
-  const L=m26[m26.length-1],P=m26.length>1?m26[m26.length-2]:null;
-  document.getElementById('tHead').innerHTML=`<tr><th>編號</th><th>客戶</th>${P?`<th class="r">${P}</th>`:''}<th class="r">${L}</th><th class="r">稅金(${L})</th><th class="r">MoM</th><th class="r">YoY vs 2025</th><th class="r">YoY vs 2024</th><th class="r">累計</th><th>趨勢</th></tr>`;
+  const ctx = getYearContext();
+  const { customers, months, prevCustomers, prevLabel, yearLabel } = ctx;
+  if (!months.length) return;
+
+  if (VIEW === '2025') {
+    // 2025：顯示全年合計 + YoY vs 2024
+    document.getElementById('tHead').innerHTML = `<tr>
+      <th>編號</th><th>客戶</th>
+      <th class="r">2025全年</th>
+      <th class="r">2024全年</th>
+      <th class="r">YoY vs 2024</th>
+      <th class="r">趨勢</th>
+    </tr>`;
+    return;
+  }
+  if (VIEW === '2024') {
+    document.getElementById('tHead').innerHTML = `<tr>
+      <th>編號</th><th>客戶</th>
+      <th class="r">2024全年</th>
+      <th class="r">趨勢</th>
+    </tr>`;
+    return;
+  }
+  // 2026 / yoy / mom
+  const L = months[months.length-1], P = months.length>1 ? months[months.length-2] : null;
+  document.getElementById('tHead').innerHTML = `<tr>
+    <th>編號</th><th>客戶</th>
+    ${P ? `<th class="r">${P}</th>` : ''}
+    <th class="r">${L}</th>
+    <th class="r">稅金(${L})</th>
+    <th class="r">MoM</th>
+    <th class="r">YoY vs 2025</th>
+    <th class="r">累計</th>
+    <th>趨勢</th>
+  </tr>`;
 }
 
 function renderTable(){
-  const m26=M26(),c26=C26(),c25=C25(),c24=C24();if(!m26.length)return;
-  const L=m26[m26.length-1],P=m26.length>1?m26[m26.length-2]:null;
-  const q=document.getElementById('srch').value.trim().toLowerCase(),sort=document.getElementById('tSort').value,filt=document.getElementById('tFilter').value;
-  let data=c26.filter(c=>{if(q&&!c.name.toLowerCase().includes(q)&&!c.id.toLowerCase().includes(q))return false;if(filt==='active')return c[L]>0;if(filt==='new')return c[L]>0&&(!P||!c[P]);if(filt==='miss')return!c[L]&&m26.some(m=>m!==L&&c[m]>0);return true;});
-  const total=c=>m26.reduce((s,m)=>s+(c[m]||0),0);
-  const y25=c=>{const x=find(c25,c.id);return x?fmtPct(c[L]||0,x[L]||0):null;};
-  const y24=c=>{const x=find(c24,c.id);return x?fmtPct(c[L]||0,x[L]||0):null;};
-  const mom=c=>P?fmtPct(c[L]||0,c[P]||0):null;
-  if(sort==='latest')data.sort((a,b)=>(b[L]||0)-(a[L]||0));
-  else if(sort==='total')data.sort((a,b)=>total(b)-total(a));
-  else if(sort==='yoy')data.sort((a,b)=>{const ya=parseFloat(y25(a))||0,yb=parseFloat(y25(b))||0;return yb-ya;});
+  const ctx = getYearContext();
+  const { customers, months, prevCustomers, prevLabel, yearLabel } = ctx;
+  if (!months.length && VIEW !== '2025' && VIEW !== '2024') return;
+
+  const q    = document.getElementById('srch').value.trim().toLowerCase();
+  const sort = document.getElementById('tSort').value;
+  const filt = document.getElementById('tFilter').value;
+
+  // ── 2025 視角：全年資料，YoY vs 2024 ──
+  if (VIEW === '2025') {
+    const allC = DATA[2025];
+    const allC24 = DATA[2024];
+    const totY = c => MONTHS.reduce((s,m) => s+(c[m]||0), 0);
+    let data = allC.filter(c => {
+      if (q && !c.name.toLowerCase().includes(q) && !c.id.toLowerCase().includes(q)) return false;
+      if (filt === 'active') return totY(c) > 0;
+      return true;
+    }).filter(c => totY(c) > 0);
+
+    if (sort === 'latest' || sort === 'total') data.sort((a,b) => totY(b)-totY(a));
+    else if (sort === 'yoy') {
+      data.sort((a,b) => {
+        const xa = find(allC24, a.id), xb = find(allC24, b.id);
+        const pa = xa ? parseFloat(fmtPct(totY(a), totY(xa)))||0 : -999;
+        const pb = xb ? parseFloat(fmtPct(totY(b), totY(xb)))||0 : -999;
+        return pb - pa;
+      });
+    } else data.sort((a,b) => a.name.localeCompare(b.name,'zh-TW'));
+
+    // 判斷趨勢：2025 H2 vs H1
+    const h1 = ['1月','2月','3月','4月','5月','6月'];
+    const h2 = ['7月','8月','9月','10月','11月','12月'];
+    function badge25(c) {
+      const s1 = h1.reduce((s,m)=>s+(c[m]||0),0);
+      const s2 = h2.reduce((s,m)=>s+(c[m]||0),0);
+      if (!s1 && !s2) return '';
+      if (!s1) return '<span class="pill p-new">下半年新增</span>';
+      const p = ((s2-s1)/s1*100).toFixed(0);
+      return s2>=s1 ? `<span class="pill p-up">▲${p}%</span>` : `<span class="pill p-dn">▼${Math.abs(p)}%</span>`;
+    }
+
+    document.getElementById('tBody').innerHTML = data.map(c => {
+      const c24 = find(allC24, c.id);
+      const tot25 = totY(c);
+      const tot24 = c24 ? totY(c24) : 0;
+      const yoy = c24 ? fmtPct(tot25, tot24) : null;
+      return `<tr>
+        <td class="dim">${c.id}</td>
+        <td style="font-weight:600">${c.name}</td>
+        <td class="r" style="font-weight:600">$${tot25.toLocaleString('zh-TW')}</td>
+        <td class="r" style="color:#64748B">${tot24>0?'$'+tot24.toLocaleString('zh-TW'):'—'}</td>
+        <td class="r">${pctTag(yoy)}</td>
+        <td>${badge25(c)}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('tFoot').textContent = `顯示 ${data.length} 筆 · 共 ${allC.filter(c=>totY(c)>0).length} 筆`;
+    return;
+  }
+
+  // ── 2024 視角：全年資料，無 YoY ──
+  if (VIEW === '2024') {
+    const allC = DATA[2024];
+    const totY = c => MONTHS.reduce((s,m) => s+(c[m]||0), 0);
+    let data = allC.filter(c => {
+      if (q && !c.name.toLowerCase().includes(q) && !c.id.toLowerCase().includes(q)) return false;
+      return totY(c) > 0;
+    });
+    if (sort === 'latest' || sort === 'total') data.sort((a,b) => totY(b)-totY(a));
+    else data.sort((a,b) => a.name.localeCompare(b.name,'zh-TW'));
+
+    // 趨勢：H2 vs H1
+    const h1=['1月','2月','3月','4月','5月','6月'],h2=['7月','8月','9月','10月','11月','12月'];
+    function badge24(c){
+      const s1=h1.reduce((s,m)=>s+(c[m]||0),0),s2=h2.reduce((s,m)=>s+(c[m]||0),0);
+      if(!s1&&!s2)return'';if(!s1)return'<span class="pill p-new">下半年新增</span>';
+      const p=((s2-s1)/s1*100).toFixed(0);return s2>=s1?`<span class="pill p-up">▲${p}%</span>`:`<span class="pill p-dn">▼${Math.abs(p)}%</span>`;
+    }
+    document.getElementById('tBody').innerHTML = data.map(c => `<tr>
+      <td class="dim">${c.id}</td>
+      <td style="font-weight:600">${c.name}</td>
+      <td class="r" style="font-weight:600">$${totY(c).toLocaleString('zh-TW')}</td>
+      <td>${badge24(c)}</td>
+    </tr>`).join('');
+    document.getElementById('tFoot').textContent = `顯示 ${data.length} 筆 · 共 ${allC.filter(c=>totY(c)>0).length} 筆`;
+    return;
+  }
+
+  // ── 2026 / YoY / MoM 視角 ──
+  const c26=C26(), c25=C25(), m26=M26();
+  if (!m26.length) return;
+  const L=m26[m26.length-1], P=m26.length>1?m26[m26.length-2]:null;
+
+  let data = c26.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.id.toLowerCase().includes(q)) return false;
+    if (filt==='active') return c[L]>0;
+    if (filt==='new')    return c[L]>0 && (!P||!c[P]);
+    if (filt==='miss')   return !c[L] && m26.some(m=>m!==L&&c[m]>0);
+    return true;
+  });
+
+  const total = c => m26.reduce((s,m)=>s+(c[m]||0),0);
+  const y25   = c => { const x=find(c25,c.id); return x?fmtPct(c[L]||0,x[L]||0):null; };
+  const mom   = c => P ? fmtPct(c[L]||0,c[P]||0) : null;
+
+  if (sort==='latest') data.sort((a,b)=>(b[L]||0)-(a[L]||0));
+  else if (sort==='total') data.sort((a,b)=>total(b)-total(a));
+  else if (sort==='yoy') data.sort((a,b)=>{const ya=parseFloat(y25(a))||0,yb=parseFloat(y25(b))||0;return yb-ya;});
   else data.sort((a,b)=>a.name.localeCompare(b.name,'zh-TW'));
-  function badge(c){if(!P)return '';if(c[L]>0&&!c[P])return '<span class="pill p-new">新增</span>';if(!c[L]&&c[P]>0)return '<span class="pill p-na">本月無</span>';if(c[L]>0&&c[P]>0){const p=((c[L]-c[P])/c[P]*100).toFixed(0);return c[L]>=c[P]?`<span class="pill p-up">▲${p}%</span>`:`<span class="pill p-dn">▼${Math.abs(p)}%</span>`;}return '';}
-  document.getElementById('tBody').innerHTML=data.map(c=>{const yy25=y25(c),yy24=y24(c),mo=mom(c);return`<tr><td class="dim">${c.id}</td><td style="font-weight:600">${c.name}</td>${P?`<td class="r" style="color:#64748B">${fmt(c[P]||0)}</td>`:''}<td class="r">${fmt(c[L]||0)}</td><td class="r dim">${fmt(c[L+'_tax']||0)}</td><td class="r">${pctTag(mo)}</td><td class="r">${pctTag(yy25)}</td><td class="r">${pctTag(yy24)}</td><td class="r" style="font-weight:700">${fmt(total(c))}</td><td>${badge(c)}</td></tr>`;}).join('');
-  document.getElementById('tFoot').textContent=`顯示 ${data.length} 筆 · 共 ${c26.length} 筆`;
+
+  function badge(c){
+    if(!P)return'';
+    if(c[L]>0&&!c[P])return'<span class="pill p-new">新增</span>';
+    if(!c[L]&&c[P]>0)return'<span class="pill p-na">本月無</span>';
+    if(c[L]>0&&c[P]>0){const p=((c[L]-c[P])/c[P]*100).toFixed(0);return c[L]>=c[P]?`<span class="pill p-up">▲${p}%</span>`:`<span class="pill p-dn">▼${Math.abs(p)}%</span>`;}
+    return'';
+  }
+
+  document.getElementById('tBody').innerHTML = data.map(c => {
+    const yoy25=y25(c), mo=mom(c);
+    return `<tr>
+      <td class="dim">${c.id}</td>
+      <td style="font-weight:600">${c.name}</td>
+      ${P?`<td class="r" style="color:#64748B">${fmt(c[P]||0)}</td>`:''}
+      <td class="r">${fmt(c[L]||0)}</td>
+      <td class="r dim">${fmt(c[L+'_tax']||0)}</td>
+      <td class="r">${pctTag(mo)}</td>
+      <td class="r">${pctTag(yoy25)}</td>
+      <td class="r" style="font-weight:700">${fmt(total(c))}</td>
+      <td>${badge(c)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tFoot').textContent = `顯示 ${data.length} 筆 · 共 ${c26.length} 筆`;
 }
 
 window.addEventListener('load',()=>{
+  updateTableControls(); // 初始化篩選/排序選項
   const ok=loadStorage();
   if(ok){document.getElementById('fileInfo').textContent='2026年：'+STATE26.months.join('、');updateSavedBar();renderAll();document.getElementById('uploadSection').style.display='none';document.getElementById('dashboard').style.display='block';}
 });
