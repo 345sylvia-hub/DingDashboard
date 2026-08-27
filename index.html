@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Core · 年度銷售儀表板 ·</title>
+<title>Sylvia Finance · 年度銷售儀表板</title>
 <script>
 (function(){
   function load(src,ok,err){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=err;document.head.appendChild(s);}
@@ -105,6 +105,7 @@ header{background:var(--navy);padding:0 32px;height:60px;display:flex;align-item
 
 /* ── Chart Row ── */
 .chart-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:20px}
+.a-chart-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:20px}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm)}
 .card-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:8px}
 .card-title{font-family:var(--title);font-size:13.5px;font-weight:700;color:var(--ink)}
@@ -158,7 +159,7 @@ tbody tr:last-child td{border-bottom:none}
 
 @media(max-width:900px){
   .kpi-row{grid-template-columns:repeat(2,1fr)}
-  .chart-row,.yoy-grid,.mom-grid{grid-template-columns:1fr}
+  .chart-row,.a-chart-row,.yoy-grid,.mom-grid{grid-template-columns:1fr}
   #dashboard{padding:14px 16px 40px}
   header{padding:0 16px}
 }
@@ -225,22 +226,27 @@ tbody tr:last-child td{border-bottom:none}
         <button class="y-btn" id="yBtn24" onclick="setYear(2024)">2024年</button>
       </div>
     </div>
+
+    <!-- KPI 四格 -->
     <div class="kpi-row" id="annualKPI"></div>
-    <div class="chart-row">
-      <div class="card">
-        <div class="card-hdr">
-          <div><div class="card-title" id="aBarTitle">前 10 大客戶</div><div class="card-sub" id="aBarSub"></div></div>
-          <div class="leg-row" id="aBarLeg"></div>
-        </div>
-        <div class="chart-wrap" style="height:280px"><canvas id="aBarC"></canvas></div>
-      </div>
+
+    <!-- 圖表列：月趨勢長條 + 銷售佔比圓餅 -->
+    <div class="a-chart-row">
       <div class="card">
         <div class="card-hdr">
           <div><div class="card-title" id="aLineTitle">月銷售趨勢</div><div class="card-sub" id="aLineSub"></div></div>
         </div>
-        <div class="chart-wrap" style="height:280px"><canvas id="aLineC"></canvas></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="aLineC"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr">
+          <div><div class="card-title" id="aPieTitle">銷售額占比（客戶）</div><div class="card-sub" id="aPieSub"></div></div>
+        </div>
+        <div class="chart-wrap" style="height:240px"><canvas id="aPieC"></canvas></div>
       </div>
     </div>
+
+    <!-- 客戶明細表格 -->
     <div class="tbl-card">
       <div class="tbl-bar">
         <span class="tbl-title" id="aTblTitle">客戶明細</span>
@@ -572,41 +578,118 @@ function renderAnnual(){
     ${k.yoy!==null?pctBadge(k.yoy):''}
   </div>`).join('');
 
-  renderAnnualBar(cs,ms);
   renderAnnualLine(cs,ms);
+  renderAnnualPie(cs,ms);
   renderAnnualTable();
-}
-
-function renderAnnualBar(cs,ms){
-  dc('aBar');
-  const col=YEAR_COLOR[YEAR];
-  const top10=[...cs].filter(c=>ms.some(m=>c[m]>0)).sort((a,b)=>{
-    const ta=ms.reduce((s,m)=>s+(a[m]||0),0),tb=ms.reduce((s,m)=>s+(b[m]||0),0);
-    return tb-ta;
-  }).slice(0,10);
-  // 最多顯示最近3月
-  const showMs=ms.slice(-3);
-  const colors=['rgba(67,97,238,.85)','rgba(123,47,190,.7)','rgba(46,196,182,.7)'];
-  const yearCols={2026:['rgba(67,97,238,.85)','rgba(100,130,255,.7)','rgba(67,97,238,.5)'],2025:['rgba(123,47,190,.85)','rgba(160,90,220,.7)','rgba(123,47,190,.5)'],2024:['rgba(46,196,182,.85)','rgba(80,220,200,.7)','rgba(46,196,182,.5)']};
-  const yCols=yearCols[YEAR]||colors;
-  document.getElementById('aBarTitle').textContent=`前 10 大客戶（${YEAR}年）`;
-  document.getElementById('aBarSub').textContent=showMs.length>1?`依${showMs[showMs.length-1]}排序`:'依全年合計排序';
-  document.getElementById('aBarLeg').innerHTML=showMs.map((m,i)=>`<div class="leg"><div class="leg-dot" style="background:${yCols[i]}"></div>${m}</div>`).join('');
-  CHARTS.aBar=new Chart(document.getElementById('aBarC'),{type:'bar',
-    data:{labels:top10.map(c=>c.name),datasets:showMs.map((m,i)=>({label:m,data:top10.map(c=>c[m]||0),backgroundColor:yCols[i],borderRadius:6,borderSkipped:false}))},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:showMs.length>1,labels:{color:TC,font:{size:11}}}},scales:{x:{ticks:{color:TC,font:{size:11},maxRotation:30},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtM(v)},grid:{color:GC},border:{display:false}}}}
-  });
 }
 
 function renderAnnualLine(cs,ms){
   dc('aLine');
   const col=YEAR_COLOR[YEAR];
-  const data=ms.map(m=>mT(cs,m));
+  const mData=ms.map(m=>mT(cs,m));
   document.getElementById('aLineTitle').textContent=`月銷售趨勢（${YEAR}年）`;
   document.getElementById('aLineSub').textContent=ms[0]+'～'+ms[ms.length-1];
-  CHARTS.aLine=new Chart(document.getElementById('aLineC'),{type:'line',
-    data:{labels:ms,datasets:[{label:YEAR+'年',data,borderColor:col,backgroundColor:col+'18',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:col,pointBorderColor:'#fff',pointBorderWidth:2.5,borderWidth:2.5}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+ctx.raw.toLocaleString('zh-TW')}}},scales:{x:{ticks:{color:TC,font:{size:12}},grid:{display:false},border:{display:false}},y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtM(v)},grid:{color:GC},border:{display:false}}}}
+  // 月份長條圖（對照圖示）
+  CHARTS.aLine=new Chart(document.getElementById('aLineC'),{type:'bar',
+    data:{labels:ms,datasets:[{label:YEAR+'年',data:mData,backgroundColor:mData.map((_,i)=>{ const maxI=mData.indexOf(Math.max(...mData)); return i===maxI?col:col+'66'; }),borderRadius:6,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+ctx.raw.toLocaleString('zh-TW')}}},
+      scales:{
+        x:{ticks:{color:TC,font:{size:11}},grid:{display:false},border:{display:false}},
+        y:{ticks:{color:TC,font:{size:11,family:'DM Mono'},callback:v=>fmtM(v)},grid:{color:GC},border:{display:false}}
+      }
+    }
+  });
+}
+
+function renderAnnualPie(cs, ms){
+  dc('aPie');
+  const col = YEAR_COLOR[YEAR];
+  const tot = c => ms.reduce((s,m) => s+(c[m]||0), 0);
+  const sorted = [...cs].filter(c => tot(c)>0).sort((a,b) => tot(b)-tot(a));
+  const top8 = sorted.slice(0,8);
+  const rest = sorted.slice(8).reduce((s,c) => s+tot(c), 0);
+  const grandTotal = sorted.reduce((s,c) => s+tot(c), 0);
+
+  // 圓餅配色：用年度色系漸層
+  const pieColors26 = ['#4361EE','#6B83F2','#8FA5F5','#B3C4F8','#3A56D4','#2A46C0','#5577F0','#7799F3','#C8D4FC'];
+  const pieColors25 = ['#7B2FBE','#9B56D4','#B87DE8','#D4A8F0','#6824A8','#5A1E90','#8E43C8','#A866D8','#E0C8F5'];
+  const pieColors24 = ['#2EC4B6','#52D0C4','#76DCD2','#9AE8E0','#26AFA2','#1E9A8E','#40CAC0','#64D4CC','#C0F0EC'];
+  const palMap = {2026:pieColors26, 2025:pieColors25, 2024:pieColors24};
+  const pal = palMap[YEAR] || pieColors26;
+
+  const labels = top8.map(c => c.name.length>6 ? c.name.slice(0,6)+'…' : c.name);
+  const data   = top8.map(c => tot(c));
+  const pcts   = top8.map(c => (tot(c)/grandTotal*100).toFixed(1));
+  if(rest > 0){ labels.push('其他'); data.push(rest); pcts.push((rest/grandTotal*100).toFixed(1)); pal[8]='#D0D5E8'; }
+
+  document.getElementById('aPieTitle').textContent = '銷售額占比（客戶）';
+  document.getElementById('aPieSub').textContent = `前10大客戶佔 ${(top8.reduce((s,c)=>s+tot(c),0)/grandTotal*100).toFixed(1)}%`;
+
+  const fmtM = v => v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1000?'$'+Math.round(v/1000)+'K':'$'+v;
+
+  CHARTS.aPie = new Chart(document.getElementById('aPieC'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: pal,
+        borderWidth: 2,
+        borderColor: '#fff',
+        hoverBorderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            color: '#111111',
+            font: { size: 11, family: 'Noto Sans TC' },
+            padding: 8,
+            boxWidth: 12,
+            boxHeight: 12,
+            generateLabels: chart => {
+              const ds = chart.data.datasets[0];
+              return chart.data.labels.map((label, i) => ({
+                text: `${label}  ${pcts[i]}%`,
+                fillStyle: ds.backgroundColor[i],
+                strokeStyle: '#fff',
+                lineWidth: 1,
+                index: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.label}: ${fmtM(ctx.raw)} (${pcts[ctx.dataIndex]}%)`
+          }
+        }
+      }
+    },
+    plugins: [{
+      id: 'centerText',
+      afterDraw(chart) {
+        const {ctx, chartArea: {width, height, left, top}} = chart;
+        const cx = left + width/2, cy = top + height/2;
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#111';
+        ctx.font = 'bold 12px Outfit,sans-serif';
+        ctx.fillText('前10大客戶', cx, cy-10);
+        ctx.fillStyle = YEAR_COLOR[YEAR];
+        ctx.font = 'bold 16px DM Mono,monospace';
+        ctx.fillText((top8.reduce((s,c)=>s+tot(c),0)/grandTotal*100).toFixed(1)+'%', cx, cy+10);
+        ctx.restore();
+      }
+    }]
   });
 }
 
@@ -626,14 +709,15 @@ function renderAnnualTable(){
   const grandTotal=data.reduce((s,c)=>s+tot(c),0);
   const maxTot=Math.max(...data.map(c=>tot(c)),1);
 
-  // 表頭
+  // 表頭（對照圖示）
   document.getElementById('aTHead').innerHTML=`<tr>
-    <th class="c">排名</th>
-    <th>客戶</th>
-    <th class="r">${YEAR}年 累計</th>
-    <th class="r">占比</th>
-    <th style="min-width:120px">業績占比</th>
-    <th class="r">趨勢</th>
+    <th class="c" style="width:48px">排名</th>
+    <th>客戶名稱</th>
+    <th class="r">${YEAR}年 累計銷售額</th>
+    <th style="min-width:140px">業績占比</th>
+    <th class="r" style="width:52px">占比</th>
+    <th class="r" style="width:90px">平均客單價</th>
+    <th style="width:100px;text-align:center">月趨勢</th>
   </tr>`;
 
   // 趨勢：用 H1/H2 比較，或本年 vs 前一年
@@ -652,22 +736,38 @@ function renderAnnualTable(){
     return pctPill(fmtPct(s2,s1));
   }
 
+  // 計算每個客戶的月均（有資料月份）
   document.getElementById('aTBody').innerHTML=data.map((c,i)=>{
     const t=tot(c);
     const pct=grandTotal>0?(t/grandTotal*100).toFixed(1):0;
     const rankCls=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const activeMsCnt=ms.filter(m=>c[m]>0).length||1;
+    const avgUnit=Math.round(t/activeMsCnt);
+    // 迷你趨勢折線（SVG sparkline）
+    const vals=ms.map(m=>c[m]||0);
+    const maxV=Math.max(...vals,1);
+    const pts=vals.map((v,idx)=>{
+      const x=(idx/(vals.length-1||1)*80).toFixed(1);
+      const y=(20-v/maxV*18).toFixed(1);
+      return `${x},${y}`;
+    }).join(' ');
+    const col=YEAR_COLOR[YEAR];
+    const sparkline=`<svg width="80" height="22" style="overflow:visible">
+      <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+      <polyline points="0,20 ${pts} 80,20" fill="${col}22" stroke="none"/>
+    </svg>`;
     return`<tr>
       <td class="c"><span class="rank ${rankCls}">${i+1}</span></td>
       <td style="font-weight:600">${c.name}</td>
       <td class="r" style="font-weight:700">$${t.toLocaleString('zh-TW')}</td>
-      <td class="r dim">${pct}%</td>
       <td>
         <div class="bar-cell">
           <div class="bar-bg"><div class="bar-fill" style="width:${(t/maxTot*100).toFixed(1)}%"></div></div>
-          <span style="font-size:10px;color:var(--ink2);font-family:var(--mono);width:36px;text-align:right">${pct}%</span>
         </div>
       </td>
-      <td class="r">${trend(c)}</td>
+      <td class="r dim">${pct}%</td>
+      <td class="r" style="font-family:var(--mono);font-size:12px">$${avgUnit.toLocaleString('zh-TW')}</td>
+      <td style="text-align:center">${sparkline}</td>
     </tr>`;
   }).join('');
   document.getElementById('aTFoot').textContent=`顯示 ${data.length} 筆 · 共 ${cs.filter(c=>ms.some(m=>c[m]>0)).length} 筆`;
