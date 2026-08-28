@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Core · 年度銷售 ·</title>
+<title>Sylvia Finance · 年度銷售儀表板</title>
 <script>
 (function(){
   function load(src,ok,err){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=err;document.head.appendChild(s);}
@@ -611,17 +611,18 @@ function renderAnnualPie(cs, ms){
   const rest = sorted.slice(8).reduce((s,c) => s+tot(c), 0);
   const grandTotal = sorted.reduce((s,c) => s+tot(c), 0);
 
-  // 圓餅配色：用年度色系漸層
-  const pieColors26 = ['#4361EE','#6B83F2','#8FA5F5','#B3C4F8','#3A56D4','#2A46C0','#5577F0','#7799F3','#C8D4FC'];
-  const pieColors25 = ['#7B2FBE','#9B56D4','#B87DE8','#D4A8F0','#6824A8','#5A1E90','#8E43C8','#A866D8','#E0C8F5'];
-  const pieColors24 = ['#2EC4B6','#52D0C4','#76DCD2','#9AE8E0','#26AFA2','#1E9A8E','#40CAC0','#64D4CC','#C0F0EC'];
-  const palMap = {2026:pieColors26, 2025:pieColors25, 2024:pieColors24};
-  const pal = palMap[YEAR] || pieColors26;
+  // 圓餅配色：依原始儀表板圖示使用年度主色與固定順序
+  const PIE_PAL = {
+    2026: ['#4361EE','#F5A623','#B7D84B','#C8A2D8','#70C1B3','#C9C9CB','#BDE0FE','#FFB3C6','#FFD6A5'],
+    2025: ['#7B2FBE','#F5A623','#B7D84B','#C8A2D8','#70C1B3','#C9C9CB','#BDE0FE','#FFB3C6','#FFD6A5'],
+    2024: ['#2EC4B6','#F5A623','#B7D84B','#C8A2D8','#70C1B3','#C9C9CB','#BDE0FE','#FFB3C6','#FFD6A5']
+  };
+  const pal = [...(PIE_PAL[YEAR] || PIE_PAL[2026])];
 
   const labels = top8.map(c => c.name.length>6 ? c.name.slice(0,6)+'…' : c.name);
   const data   = top8.map(c => tot(c));
   const pcts   = top8.map(c => (tot(c)/grandTotal*100).toFixed(1));
-  if(rest > 0){ labels.push('其他'); data.push(rest); pcts.push((rest/grandTotal*100).toFixed(1)); pal[8]='#D0D5E8'; }
+  if(rest > 0){ labels.push('其他'); data.push(rest); pcts.push((rest/grandTotal*100).toFixed(1)); pal[8]='#94A3B8'; }
 
   document.getElementById('aPieTitle').textContent = '銷售額占比（客戶）';
   document.getElementById('aPieSub').textContent = `前10大客戶佔 ${(top8.reduce((s,c)=>s+tot(c),0)/grandTotal*100).toFixed(1)}%`;
